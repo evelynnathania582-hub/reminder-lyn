@@ -3,198 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ruang Aman</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@300;500&family=Indie+Flower&display=swap" rel="stylesheet">
+    <title>Ruang Teduh Bersama Lynn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@500&family=Indie+Flower&display=swap" rel="stylesheet">
     <style>
-        :root { --pastel-bg: #fdf6ec; --soft-brown: #8d7b68; --accent-green: #a9af91; --paper-white: #ffffff; }
-        * { box-sizing: border-box; }
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Quicksand', sans-serif; background-color: var(--pastel-bg); overflow: hidden; }
-        
-        /* Dedaunan tetap di pojok */
-        .leaf { position: fixed; width: 150px; opacity: 0.4; z-index: 5; pointer-events: none; }
-        .leaf-1 { top: -30px; right: -30px; transform: rotate(120deg); }
-        .leaf-2 { bottom: -30px; left: -30px; }
+        :root { --bg: #fdf6ec; --brown: #8d7b68; --green: #a9af91; --line: #e0e0e0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Quicksand', sans-serif; background: var(--bg); color: var(--brown); height: 100vh; display: flex; overflow: hidden; }
 
         /* Sidebar */
-        .sidebar { position: fixed; left: 0; top: 0; width: 60px; height: 100%; background: white; display: flex; flex-direction: column; align-items: center; padding-top: 50px; z-index: 100; box-shadow: 2px 0 10px rgba(0,0,0,0.05); transition: 0.3s; }
-        .sidebar:hover { width: 160px; }
-        .sidebar:hover .menu-text { display: inline; }
-        .nav-item { width: 100%; padding: 15px 0; cursor: pointer; display: flex; align-items: center; padding-left: 20px; transition: 0.2s; }
-        .nav-item:hover { background: #fffcf7; }
-        .menu-text { display: none; margin-left: 15px; font-weight: 500; font-size: 14px; white-space: nowrap; }
+        .nav { width: 70px; background: white; height: 100%; display: flex; flex-direction: column; align-items: center; padding-top: 30px; box-shadow: 2px 0 10px rgba(0,0,0,0.03); z-index: 100; }
+        .nav-icon { margin-bottom: 35px; cursor: pointer; font-size: 22px; transition: 0.3s; opacity: 0.5; }
+        .nav-icon:hover { opacity: 1; transform: scale(1.2); }
 
-        /* Kontainer Utama */
-        .main-container { margin-left: 60px; height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; position: relative; z-index: 10; }
-        .book-page { 
-            background: var(--paper-white); width: 100%; max-width: 750px; height: 85vh; 
-            border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); 
-            padding: 30px; display: flex; flex-direction: column; overflow-y: auto;
+        /* Main Content */
+        .content { flex: 1; padding: 25px; display: flex; justify-content: center; align-items: center; }
+        .card { background: white; width: 100%; max-width: 800px; height: 88vh; border-radius: 25px; padding: 35px; box-shadow: 0 15px 45px rgba(0,0,0,0.04); display: flex; flex-direction: column; position: relative; }
+
+        /* Notebook Lines */
+        .paper-lines {
+            width: 100%; flex: 1; border: none; outline: none;
+            font-family: 'Indie Flower', cursive; font-size: 21px; line-height: 32px;
+            padding: 0 5px; resize: none; color: #444;
+            background: repeating-linear-gradient(white, white 31px, var(--line) 32px);
+            background-attachment: local;
         }
 
-        /* Diary Text */
-        textarea#diary-text { 
-            width: 100%; flex-grow: 1; border: none; outline: none; background: transparent; 
-            font-family: 'Indie Flower', cursive; font-size: 20px; resize: none; 
-            background-image: linear-gradient(transparent, transparent 29px, #eee 30px);
-            background-size: 100% 30px; line-height: 30px; color: #444; margin-top: 15px;
-        }
+        /* Titles */
+        h1 { font-family: 'Dancing Script'; font-size: 30px; color: var(--brown); margin-bottom: 5px; }
+        .sub-text { font-size: 13px; color: #bbb; margin-bottom: 20px; }
 
-        /* Mood & Buttons */
-        .mood-box { display: flex; gap: 8px; margin: 10px 0; }
-        .mood-item { cursor: pointer; font-size: 12px; background: #f9f9f9; padding: 6px 12px; border-radius: 15px; border: 1px solid #eee; }
-        .mood-item.active { background: var(--accent-green); color: white; border-color: var(--accent-green); }
-        .btn-action { background: var(--accent-green); color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; align-self: flex-end; }
+        /* Moods */
+        .mood-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        .mood { padding: 6px 15px; border-radius: 15px; border: 1px solid #eee; cursor: pointer; font-size: 12px; transition: 0.2s; }
+        .mood.active { background: var(--green); color: white; border-color: var(--green); }
 
         /* Plan Grid */
-        .plan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .plan-card { background: #fffcf7; padding: 12px; border-radius: 12px; border: 1px solid #f0e6d6; }
-        .plan-card h4 { margin: 0 0 8px 0; font-size: 13px; color: var(--soft-brown); }
-        .plan-input { width: 100%; height: 60px; border: none; background: transparent; font-family: 'Indie Flower', cursive; font-size: 17px; outline: none; resize: none; }
+        .plan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 10px; }
+        .plan-item { padding: 15px; border-radius: 18px; border: 1px solid rgba(169, 175, 145, 0.2); transition: 0.3s; }
+        .plan-item:nth-child(1) { background: #f9fbf2; } .plan-item:nth-child(2) { background: #fef9f3; }
+        .plan-item:nth-child(3) { background: #f4f7f9; } .plan-item:nth-child(4) { background: #fdf4f4; }
+        .plan-item h4 { font-size: 14px; margin-bottom: 8px; color: var(--brown); display: flex; align-items: center; gap: 5px; }
+        .plan-item textarea { width: 100%; height: 70px; border: none; background: transparent; outline: none; font-family: 'Indie Flower'; font-size: 18px; resize: none; }
 
-        /* Music Section */
-        .music-area { text-align: center; }
-        #music-input { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #eee; margin: 10px 0; outline: none; }
-        .rec-music { display: flex; gap: 8px; justify-content: center; margin-bottom: 15px; flex-wrap: wrap; }
-        .rec-item { font-size: 11px; padding: 4px 10px; border: 1px solid var(--accent-green); border-radius: 8px; cursor: pointer; color: var(--accent-green); }
+        /* Archive Items */
+        .archive-list { overflow-y: auto; padding-right: 10px; }
+        .entry-card { background: #fffdf9; border-radius: 15px; padding: 20px; margin-bottom: 15px; border-left: 5px solid var(--green); box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        
+        /* Music Thumbnail */
+        .music-preview { margin-top: 20px; text-align: center; }
+        .music-thumb { width: 100%; max-width: 300px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); margin-bottom: 15px; }
 
-        /* PIN */
-        #pin-overlay { position: fixed; inset: 0; background: var(--pastel-bg); z-index: 2000; display: flex; align-items: center; justify-content: center; }
-        .pin-box { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; width: 280px; }
-        input[type="password"] { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #eee; text-align: center; }
+        /* PIN Overlay */
+        #lock { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: flex; justify-content: center; align-items: center; }
+        .lock-box { background: white; padding: 45px; border-radius: 30px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.08); width: 340px; }
+        .pin-wrapper { position: relative; margin: 25px 0; }
+        .pin-wrapper input { width: 100%; padding: 14px; border-radius: 15px; border: 1px solid #f0f0f0; text-align: center; font-size: 20px; outline: none; background: #fafafa; }
+        .eye { position: absolute; right: 15px; top: 15px; cursor: pointer; font-size: 18px; }
 
+        .btn-green { background: var(--green); color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-weight: bold; align-self: flex-end; transition: 0.3s; }
+        .btn-green:hover { filter: brightness(0.9); transform: translateY(-2px); }
+
+        .watermark { position: fixed; bottom: 20px; right: 25px; font-family: 'Dancing Script'; opacity: 0.4; font-size: 18px; color: var(--brown); }
         .hidden { display: none !important; }
+        ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-thumb { background: #eee; border-radius: 10px; }
     </style>
 </head>
-<body onload="updateGreeting()">
+<body onload="init()">
 
-    <img src="https://www.transparentpng.com/download/leaf/leaves-free-download-transparent-3.png" class="leaf leaf-1">
-    <img src="https://www.transparentpng.com/download/leaf/leaves-free-download-transparent-3.png" class="leaf leaf-2">
-
-    <div id="pin-overlay">
-        <div class="pin-box">
-            <h2 style="font-family: 'Dancing Script';">Ruang Aman 🔒</h2>
-            <div id="setup-box">
-                <input type="password" id="reg-p1" placeholder="PIN Baru">
-                <input type="password" id="reg-p2" placeholder="Ulangi PIN">
-                <button onclick="saveNewPIN()" class="btn-action" style="width:100%">Simpan</button>
+    <div id="lock">
+        <div class="lock-box">
+            <h1>Ruang Teduh Bersama Lynn 🔒</h1>
+            <div id="setup-pin">
+                <input type="password" id="p1" placeholder="Buat PIN" style="width:100%; padding:12px; margin-top:15px; border-radius:12px; border:1px solid #eee; text-align:center;">
+                <button onclick="setPIN()" class="btn-green" style="width:100%; margin-top:15px;">Mulai Sekarang ✨</button>
             </div>
-            <div id="login-box" class="hidden">
-                <input type="password" id="login-p" placeholder="••••">
-                <button onclick="login()" class="btn-action" style="width:100%">Masuk</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="sidebar">
-        <div class="nav-item" onclick="nav('write')"><span>🖋️</span><span class="menu-text">Tulis Diary</span></div>
-        <div class="nav-item" onclick="nav('archive')"><span>📖</span><span class="menu-text">Rak Buku</span></div>
-        <div class="nav-item" onclick="nav('plan')"><span>🎯</span><span class="menu-text">Plan Future</span></div>
-        <div class="nav-item" onclick="nav('music')"><span>🎵</span><span class="menu-text">Musik</span></div>
-    </div>
-
-    <div class="main-container">
-        <div id="sec-write" class="book-page">
-            <h3 id="greeting-text" style="font-family:'Dancing Script'; margin:0; color: var(--soft-brown); font-size: 28px;">Selamat Datang...</h3>
-            <p id="sub-greeting" style="font-size: 13px; color: #999; margin: 5px 0 15px 0;">Semoga harimu tenang.</p>
-            <div class="mood-box">
-                <div class="mood-item active" onclick="setMood('😊', this)">😊 Senang</div>
-                <div class="mood-item" onclick="setMood('😔', this)">😔 Sedih</div>
-                <div class="mood-item" onclick="setMood('✨', this)">✨ Semangat</div>
-            </div>
-            <textarea id="diary-text" placeholder="Ceritakan harimu..."></textarea>
-            <button class="btn-action" onclick="saveDiary()" style="margin-top:15px">Simpan 💖</button>
-        </div>
-
-        <div id="sec-archive" class="book-page hidden">
-            <h3 style="font-family:'Dancing Script'; color: var(--soft-brown); font-size: 26px; margin-bottom: 15px;">Kenangan Kamu</h3>
-            <div id="archive-list"></div>
-        </div>
-
-        <div id="sec-plan" class="book-page hidden">
-            <h3 style="font-family:'Dancing Script'; color: var(--soft-brown); font-size: 26px;">My Future Plan 🚀</h3>
-            <div class="plan-grid">
-                <div class="plan-card"><h4>🎯 Impian</h4><textarea class="plan-input" placeholder="..."></textarea></div>
-                <div class="plan-card"><h4>📚 Belajar</h4><textarea class="plan-input" placeholder="..."></textarea></div>
-                <div class="plan-card"><h4>🌱 Habit</h4><textarea class="plan-input" placeholder="..."></textarea></div>
-                <div class="plan-card"><h4>⭐ Wishlist</h4><textarea class="plan-input" placeholder="..."></textarea></div>
-            </div>
-            <div style="margin-top: 30px; text-align: center; font-family: 'Dancing Script'; color: #bbb;">
-                "Langkah kecil hari ini adalah awal masa depanmu."
-            </div>
-        </div>
-
-        <div id="sec-music" class="book-page hidden">
-            <h3 style="font-family:'Dancing Script'; color: var(--soft-brown); font-size: 26px;">Musik 🎵</h3>
-            <div class="music-area">
-                <input type="text" id="music-input" placeholder="Link YouTube + Enter">
-                <div class="rec-music">
-                    <div class="rec-item" onclick="addMusic('https://youtu.be/jfKfPfyJRdk')">Lo-fi ☕</div>
-                    <div class="rec-item" onclick="addMusic('https://youtu.be/5mI6_9S2S64')">Hujan 🌧️</div>
+            <div id="login-pin" class="hidden">
+                <div class="pin-wrapper">
+                    <input type="password" id="plog" placeholder="Masukkan PIN">
+                    <span class="eye" onclick="toggle()">👁️</span>
                 </div>
-                <div id="music-playlist" style="margin-top:15px"></div>
+                <button onclick="login()" class="btn-green" style="width:100%">Buka Pintu ✨</button>
             </div>
         </div>
     </div>
+
+    <div class="nav">
+        <div class="nav-icon" title="Tulis Diary" onclick="go('write')">🖋️</div>
+        <div class="nav-icon" title="Rak Buku" onclick="go('archive')">📖</div>
+        <div class="nav-icon" title="Plan Masa Depan" onclick="go('plan')">🎯</div>
+        <div class="nav-icon" title="Musik" onclick="go('music')">🎵</div>
+    </div>
+
+    <div class="content">
+        <div id="page-write" class="card">
+            <h1 id="hi">Sapaan...</h1>
+            <p class="sub-text" id="subhi">Bagaimana harimu?</p>
+            <div class="mood-row">
+                <div class="mood active" onclick="setMood('😊 Senang', this)">😊 Senang</div>
+                <div class="mood" onclick="setMood('😔 Sedih', this)">😔 Sedih</div>
+                <div class="mood" onclick="setMood('✨ Semangat', this)">✨ Semangat</div>
+            </div>
+            <textarea id="diary" class="paper-lines" placeholder="Tuliskan ceritamu di sini..."></textarea>
+            <button class="btn-green" onclick="save()">Simpan ke Rak Buku 💖</button>
+        </div>
+
+        <div id="page-archive" class="card hidden">
+            <h1>Rak Buku Kenangan</h1>
+            <p class="sub-text">Kumpulan cerita yang pernah kamu tulis.</p>
+            <div class="archive-list" id="list"></div>
+        </div>
+
+        <div id="page-plan" class="card hidden">
+            <h1>My Future Plan 🚀</h1>
+            <p class="sub-text">Mimpi dan targetmu di masa depan.</p>
+            <div class="plan-grid">
+                <div class="plan-item"><h4>🎯 Impian Utama</h4><textarea placeholder="Apa mimpimu?"></textarea></div>
+                <div class="plan-item"><h4>📚 Skill & Belajar</h4><textarea placeholder="Mau belajar apa?"></textarea></div>
+                <div class="plan-item"><h4>🌱 Kebiasaan Baik</h4><textarea placeholder="Hal baik hari ini..."></textarea></div>
+                <div class="plan-item"><h4>⭐ Wishlist</h4><textarea placeholder="Ingin beli/capai..."></textarea></div>
+            </div>
+        </div>
+
+        <div id="page-music" class="card hidden">
+            <h1>Musik Penenang 🎵</h1>
+            <p class="sub-text">Tempel link YouTube untuk memutar melodi.</p>
+            <input type="text" id="mu" placeholder="Masukkan Link YouTube..." style="width:100%; padding:15px; border-radius:15px; border:1px solid #eee; outline:none; background:#fafafa;">
+            <div class="music-preview" id="player-area">
+                <img src="https://img.freepik.com/free-vector/music-player-interface-template_23-2148529285.jpg" class="music-thumb" id="thumb">
+                <p style="font-size:14px; color:#999;">Coba masukkan link lagu favoritmu.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="watermark">A little space by Lyn 🕊️</div>
 
     <script>
-        let selectedMood = "😊";
-        let currentEditIndex = null;
-
-        function updateGreeting() {
+        let mood = "😊 Senang";
+        function init() {
             const h = new Date().getHours();
-            const g = document.getElementById('greeting-text');
-            const s = document.getElementById('sub-greeting');
-            if (h >= 5 && h < 11) { g.innerText = "Pagi...."; s.innerText = "Mari mulai hari dengan tenang."; }
-            else if (h >= 11 && h < 15) { g.innerText = "Siang...."; s.innerText = "Sudahkah kamu beristirahat sejenak?"; }
-            else if (h >= 15 && h < 18) { g.innerText = "Sore...."; s.innerText = "Langit mulai tenang, ceritakan harimu."; }
-            else { g.innerText = "Malam...."; s.innerText = "Waktunya beristirahat dan berefleksi."; }
+            const hi = document.getElementById('hi'), sub = document.getElementById('subhi');
+            if(h<11) { hi.innerText="Pagi...."; sub.innerText="Mari awali hari dengan hati yang tenang."; }
+            else if(h<15) { hi.innerText="Siang...."; sub.innerText="Jangan lupa beristirahat sejenak ya."; }
+            else if(h<18) { hi.innerText="Sore...."; sub.innerText="Cahaya mulai meredup, waktunya menulis."; }
+            else { hi.innerText="Malam...."; sub.innerText="Terima kasih sudah bertahan sejauh ini."; }
+
+            if(localStorage.getItem('lynn_key')) {
+                document.getElementById('setup-pin').classList.add('hidden');
+                document.getElementById('login-pin').classList.remove('hidden');
+            }
         }
 
-        const savedPIN = localStorage.getItem('lynn_pin');
-        if (savedPIN) { document.getElementById('setup-box').classList.add('hidden'); document.getElementById('login-box').classList.remove('hidden'); }
+        function setPIN() { const p = document.getElementById('p1').value; if(p) { localStorage.setItem('lynn_key', p); location.reload(); } }
+        function login() { if(document.getElementById('plog').value === localStorage.getItem('lynn_key')) document.getElementById('lock').classList.add('hidden'); else alert("PIN Salah!"); }
+        function toggle() { const x = document.getElementById('plog'); x.type = x.type === 'password' ? 'text' : 'password'; }
 
-        function saveNewPIN() {
-            const p1 = document.getElementById('reg-p1').value;
-            if (p1 && p1 === document.getElementById('reg-p2').value) { localStorage.setItem('lynn_pin', p1); location.reload(); }
-        }
-        function login() { if (document.getElementById('login-p').value === localStorage.getItem('lynn_pin')) document.getElementById('pin-overlay').classList.add('hidden'); }
-        function nav(s) { document.querySelectorAll('.book-page').forEach(p => p.classList.add('hidden')); document.getElementById('sec-' + s).classList.remove('hidden'); if (s === 'archive') renderArchive(); }
-        function setMood(m, el) { selectedMood = m; document.querySelectorAll('.mood-item').forEach(i => i.classList.remove('active')); el.classList.add('active'); }
-
-        function saveDiary() {
-            const text = document.getElementById('diary-text').value;
-            if (!text) return;
-            let data = JSON.parse(localStorage.getItem('lynn_diaries') || '[]');
-            if (currentEditIndex !== null) { data[currentEditIndex].content = text; data[currentEditIndex].mood = selectedMood; currentEditIndex = null; }
-            else { data.unshift({ date: new Date().toLocaleString('id-ID'), mood: selectedMood, content: text }); }
-            localStorage.setItem('lynn_diaries', JSON.stringify(data));
-            document.getElementById('diary-text').value = "";
-            nav('archive');
+        function go(p) {
+            document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+            document.getElementById('page-' + p).classList.remove('hidden');
+            document.querySelectorAll('.nav-icon').forEach(i => i.style.opacity = '0.5');
+            if(p === 'archive') render();
         }
 
-        function renderArchive() {
-            const data = JSON.parse(localStorage.getItem('lynn_diaries') || '[]');
-            document.getElementById('archive-list').innerHTML = data.map((item, index) => `
-                <div style="background:#fffdf9; padding:15px; border-radius:10px; border-left:4px solid var(--accent-green); margin-bottom:10px; position:relative;">
-                    <small onclick="openEdit(${index})" style="position:absolute; right:10px; top:10px; color:var(--accent-green); cursor:pointer;">Edit</small>
-                    <small><b>${item.date} | ${item.mood}</b></small>
-                    <p style="font-family:'Indie Flower'; font-size:18px; margin:8px 0 0 0; white-space:pre-wrap;">${item.content}</p>
+        function setMood(m, el) {
+            mood = m;
+            document.querySelectorAll('.mood').forEach(x => x.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function save() {
+            const t = document.getElementById('diary').value; if(!t) return;
+            let d = JSON.parse(localStorage.getItem('lynn_diary') || '[]');
+            d.unshift({ date: new Date().toLocaleString('id-ID'), m: mood, c: t });
+            localStorage.setItem('lynn_diary', JSON.stringify(d));
+            document.getElementById('diary').value = "";
+            go('archive');
+        }
+
+        function render() {
+            const d = JSON.parse(localStorage.getItem('lynn_diary') || '[]');
+            document.getElementById('list').innerHTML = d.map(x => `
+                <div class="entry-card">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <span style="font-size:11px; font-weight:bold; color:var(--green);">${x.date}</span>
+                        <span style="font-size:11px; background:#eee; padding:2px 8px; border-radius:10px;">${x.m}</span>
+                    </div>
+                    <p style="font-family:'Indie Flower'; font-size:19px; white-space:pre-wrap; color:#444;">${x.c}</p>
                 </div>
             `).join('');
         }
 
-        function openEdit(i) {
-            const data = JSON.parse(localStorage.getItem('lynn_diaries') || '[]');
-            document.getElementById('diary-text').value = data[i].content;
-            currentEditIndex = i;
-            nav('write');
-        }
-
-        function addMusic(url) {
-            const id = url.includes("v=") ? url.split("v=")[1].split("&")[0] : url.split("/").pop();
-            document.getElementById('music-playlist').innerHTML = `<iframe width="100%" height="100" src="https://www.youtube.com/embed/${id}" frameborder="0" style="border-radius:10px;"></iframe>`;
-        }
-        document.getElementById('music-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') { addMusic(e.target.value); e.target.value = ""; } });
+        document.getElementById('mu').addEventListener('keypress', e => {
+            if(e.key === 'Enter') {
+                const url = e.target.value;
+                let id = "";
+                if(url.includes('v=')) id = url.split('v=')[1].split('&')[0];
+                else if(url.includes('youtu.be/')) id = url.split('youtu.be/')[1];
+                
+                if(id) {
+                    document.getElementById('player-area').innerHTML = `
+                        <img src="https://img.youtube.com/vi/${id}/mqdefault.jpg" class="music-thumb">
+                        <iframe width="100%" height="100" src="https://www.youtube.com/embed/${id}?autoplay=1" frameborder="0" style="border-radius:15px;"></iframe>
+                    `;
+                }
+                e.target.value = "";
+            }
+        });
     </script>
 </body>
 </html>
+   
