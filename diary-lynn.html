@@ -6,7 +6,7 @@
     <title>Ruang Aman Bersama Lynn</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@300;500&family=Indie+Flower&display=swap" rel="stylesheet">
     <style>
-        :root { --pastel-bg: #fdf6ec; --soft-brown: #8d7b68; --accent-green: #a9af91; --paper-white: #ffffff; }
+        :root { --pastel-bg: #fdf6ec; --soft-brown: #8d7b68; --accent-green: #a9af91; --paper-white: #ffffff; --card-plan: #fffcf7; }
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Quicksand', sans-serif; background-color: var(--pastel-bg); overflow: hidden; }
         
         /* Daun Estetik */
@@ -31,7 +31,8 @@
             overflow-y: auto;
         }
 
-        textarea { 
+        /* Area Tulis Utama */
+        textarea#diary-text { 
             width: 100%; flex-grow: 1; border: none; outline: none; background: transparent; 
             font-family: 'Indie Flower', cursive; font-size: 21px; resize: none; 
             background-image: linear-gradient(transparent, transparent 29px, #eee 30px);
@@ -47,9 +48,18 @@
         .entry-card { background: #fffdf9; padding: 15px; margin-bottom: 15px; border-radius: 10px; border-left: 6px solid var(--accent-green); position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .edit-btn { position: absolute; top: 10px; right: 15px; cursor: pointer; background: var(--accent-green); color: white; padding: 2px 10px; border-radius: 10px; font-size: 12px; font-weight: bold; }
 
+        /* Style Menu Plan Estetik */
+        .plan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .plan-card { background: var(--card-plan); padding: 15px; border-radius: 12px; border: 1px solid #f0e6d6; box-shadow: 2px 2px 8px rgba(0,0,0,0.02); }
+        .plan-card h4 { margin: 0 0 10px 0; font-size: 14px; color: var(--soft-brown); display: flex; align-items: center; gap: 5px; font-weight: 600; }
+        .plan-input { 
+            width: 100%; height: 100px; border: none; background: transparent; 
+            font-family: 'Indie Flower', cursive; font-size: 18px; resize: none; 
+            outline: none; line-height: 1.4; color: #555;
+        }
+
         .hidden { display: none !important; }
         .watermark { position: fixed; bottom: 15px; right: 25px; font-family: 'Dancing Script', cursive; font-size: 16px; opacity: 0.6; pointer-events: none; }
-        
         input[type="password"] { width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #ddd; text-align: center; font-size: 18px; }
     </style>
 </head>
@@ -61,14 +71,12 @@
     <div id="pin-overlay">
         <div class="pin-box">
             <h2 style="font-family: 'Dancing Script'; margin-top:0;">Ruang Aman Bersama Lynn 🔒</h2>
-            
             <div id="setup-box">
                 <p style="font-size: 14px;">Atur PIN Baru Kamu:</p>
-                <input type="password" id="reg-p1" placeholder="Masukkan PIN">
+                <input type="password" id="reg-p1" placeholder="PIN Baru">
                 <input type="password" id="reg-p2" placeholder="Ulangi PIN">
                 <button onclick="saveNewPIN()" class="btn-action">Simpan PIN ✨</button>
             </div>
-
             <div id="login-box" class="hidden">
                 <p style="font-size: 14px;">Masukkan PIN Rahasia:</p>
                 <input type="password" id="login-p" placeholder="••••">
@@ -81,6 +89,7 @@
     <div class="sidebar">
         <div class="nav-item" onclick="nav('write')"><span>🖋️</span><span class="menu-text">Tulis Diary</span></div>
         <div class="nav-item" onclick="nav('archive')"><span>📖</span><span class="menu-text">Rak Buku</span></div>
+        <div class="nav-item" onclick="nav('plan')"><span>🎯</span><span class="menu-text">My Plan Future</span></div>
         <div class="nav-item" onclick="nav('music')"><span>🎵</span><span class="menu-text">Musik Rileks</span></div>
     </div>
 
@@ -102,6 +111,29 @@
         <div id="sec-archive" class="book-page hidden">
             <h3 style="font-family:'Dancing Script'; color: var(--soft-brown);">Rak Buku Kenangan</h3>
             <div id="archive-list"></div>
+        </div>
+
+        <div id="sec-plan" class="book-page hidden">
+            <h3 style="font-family:'Dancing Script'; color: var(--soft-brown);">My Plan in My Future 🚀</h3>
+            <div class="plan-grid">
+                <div class="plan-card">
+                    <h4>🎯 Impian Terbesar</h4>
+                    <textarea class="plan-input" placeholder="Tulis mimpimu..."></textarea>
+                </div>
+                <div class="plan-card">
+                    <h4>📚 Target Belajar</h4>
+                    <textarea class="plan-input" placeholder="Mau jago apa?"></textarea>
+                </div>
+                <div class="plan-card">
+                    <h4>🌱 Kebiasaan Baru</h4>
+                    <textarea class="plan-input" placeholder="Hal baik hari ini..."></textarea>
+                </div>
+                <div class="plan-card">
+                    <h4>⭐ Daftar Keinginan</h4>
+                    <textarea class="plan-input" placeholder="Apa yang mau dicapai?"></textarea>
+                </div>
+            </div>
+            <p style="font-family: 'Dancing Script'; font-size: 18px; color: #999; margin-top: 20px; text-align: center;">"Satu langkah kecil menuju masa depan."</p>
         </div>
 
         <div id="sec-music" class="book-page hidden">
@@ -163,12 +195,17 @@
             const text = document.getElementById('diary-text').value;
             if (!text) return alert("Isi dulu ceritanya ya...");
             let data = JSON.parse(localStorage.getItem('lynn_diaries') || '[]');
-            const entry = { date: new Date().toLocaleString('id-ID'), mood: selectedMood, content: text };
-            if (currentEditIndex !== null) { data[currentEditIndex] = entry; currentEditIndex = null; } 
-            else { data.unshift(entry); }
+            if (currentEditIndex !== null) {
+                data[currentEditIndex].content = text;
+                data[currentEditIndex].mood = selectedMood;
+                currentEditIndex = null;
+            } else {
+                const entry = { date: new Date().toLocaleString('id-ID'), mood: selectedMood, content: text };
+                data.unshift(entry);
+            }
             localStorage.setItem('lynn_diaries', JSON.stringify(data));
             document.getElementById('diary-text').value = "";
-            alert("Tersimpan! ✨");
+            alert("Berhasil disimpan! 💖");
             nav('archive');
         }
 
@@ -178,8 +215,8 @@
             list.innerHTML = data.map((item, index) => `
                 <div class="entry-card">
                     <div class="edit-btn" onclick="openEdit(${index})">EDIT</div>
-                    <small>${item.date} | Mood: ${item.mood}</small>
-                    <p style="font-family:'Indie Flower'; font-size:19px; white-space:pre-wrap;">${item.content}</p>
+                    <small style="color:var(--accent-green); font-weight:bold;">${item.date} | Mood: ${item.mood}</small>
+                    <p style="font-family:'Indie Flower'; font-size:19px; margin-top:10px; white-space:pre-wrap;">${item.content}</p>
                 </div>
             `).join('');
         }
