@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -6,128 +7,132 @@
     <title>Ruang Teduh Bersama Lynn</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@500&family=Indie+Flower&display=swap" rel="stylesheet">
     <style>
-        :root { --cream: #fdf6ec; --cokelat: #8d7b68; --hijau: #a9af91; --garis: #e8e0d5; }
+        :root { --bg: #fdf6ec; --brown: #8d7b68; --green: #a9af91; --line: #e8e0d5; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Quicksand', sans-serif; background: var(--cream); color: var(--cokelat); height: 100vh; display: flex; overflow: hidden; }
+        body { font-family: 'Quicksand', sans-serif; background: var(--bg); color: var(--brown); height: 100vh; display: flex; overflow: hidden; }
 
-        /* Sidebar Minimalis */
-        .sidebar { width: 70px; background: white; height: 100%; display: flex; flex-direction: column; align-items: center; padding-top: 40px; border-right: 1px solid #eee; z-index: 100; }
-        .nav-btn { margin-bottom: 30px; cursor: pointer; font-size: 24px; opacity: 0.4; transition: 0.3s; }
-        .nav-btn:hover { opacity: 1; transform: scale(1.2); }
+        /* Sidebar Navigasi */
+        .sidebar { width: 75px; background: white; height: 100%; display: flex; flex-direction: column; align-items: center; padding-top: 40px; border-right: 1px solid #eee; z-index: 100; }
+        .nav-icon { margin-bottom: 35px; cursor: pointer; font-size: 26px; opacity: 0.4; transition: 0.3s; }
+        .nav-icon:hover { opacity: 1; transform: scale(1.1); }
 
         /* Kontainer Utama */
-        .main { flex: 1; display: flex; justify-content: center; align-items: center; padding: 20px; position: relative; }
-        .kertas { 
-            background: white; width: 100%; max-width: 750px; height: 85vh; 
-            border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); 
-            display: flex; flex-direction: column; padding: 30px; position: relative; overflow: hidden;
+        .main { flex: 1; display: flex; justify-content: center; align-items: center; padding: 25px; }
+        .notebook { 
+            background: white; width: 100%; max-width: 800px; height: 88vh; 
+            border-radius: 25px; box-shadow: 0 15px 45px rgba(0,0,0,0.06); 
+            display: flex; flex-direction: column; padding: 40px; position: relative;
         }
 
-        /* Garis-Garis Buku */
-        .area-tulis {
-            flex: 1; border: none; outline: none; margin-top: 15px;
-            font-family: 'Indie Flower', cursive; font-size: 21px; line-height: 35px;
-            background: repeating-linear-gradient(transparent, transparent 34px, var(--garis) 35px);
-            background-attachment: local; resize: none; color: #444; padding: 0 5px;
+        /* Garis Kertas Realistis */
+        .paper-lines {
+            flex: 1; border: none; outline: none; margin-top: 20px;
+            font-family: 'Indie Flower', cursive; font-size: 22px; line-height: 35px;
+            background: repeating-linear-gradient(transparent, transparent 34px, var(--line) 35px);
+            background-attachment: local; resize: none; color: #444; padding: 0 10px;
+            overflow-y: auto;
         }
 
         /* Judul & Sapaan */
-        h1 { font-family: 'Dancing Script'; font-size: 32px; margin-bottom: 5px; }
-        .sapaan-sub { font-size: 13px; color: #999; margin-bottom: 15px; }
+        h1 { font-family: 'Dancing Script'; font-size: 34px; color: var(--brown); }
+        .sub-greeting { font-size: 14px; color: #bbb; margin-bottom: 15px; }
 
-        /* Plan Masa Depan - Aesthetic Columns */
-        .grid-plan { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
-        .item-plan { padding: 15px; border-radius: 15px; border: 1px dashed var(--hijau); }
-        .item-plan:nth-child(1) { background: #f9fbf2; } .item-plan:nth-child(2) { background: #fffcf7; }
-        .item-plan:nth-child(3) { background: #f4f7f9; } .item-plan:nth-child(4) { background: #fdf4f4; }
-        .item-plan h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .item-plan textarea { width: 100%; height: 60px; border: none; background: transparent; outline: none; font-family: 'Indie Flower'; font-size: 18px; resize: none; }
+        /* Plan Future Estetik */
+        .plan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .plan-card { padding: 15px; border-radius: 18px; border: 1px solid #f0f0f0; }
+        .plan-card:nth-child(1) { background: #fdfaf2; } .plan-card:nth-child(2) { background: #f9fbf2; }
+        .plan-card:nth-child(3) { background: #f4f7f9; } .plan-card:nth-child(4) { background: #fcf4f4; }
+        .plan-card h4 { font-size: 11px; letter-spacing: 1px; color: var(--brown); margin-bottom: 5px; border-bottom: 1px solid #eee; }
+        .plan-card textarea { width: 100%; height: 75px; border: none; background: transparent; outline: none; font-family: 'Indie Flower'; font-size: 18px; resize: none; }
 
-        /* Rak Buku / Arsip */
-        .arsip-scroll { overflow-y: auto; flex: 1; margin-top: 15px; padding-right: 10px; }
-        .kartu-diary { background: #fffcf8; border-radius: 12px; padding: 15px; margin-bottom: 15px; border-left: 4px solid var(--hijau); box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        /* Rak Buku / Archive */
+        .archive-box { overflow-y: auto; flex: 1; margin-top: 20px; }
+        .diary-entry { background: #fffcf9; border-radius: 15px; padding: 20px; margin-bottom: 18px; border-left: 5px solid var(--green); box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
 
-        /* Musik dengan Gambar */
-        .musik-box { text-align: center; margin-top: 20px; }
-        .thumb-lagu { width: 100%; max-width: 250px; border-radius: 15px; margin-bottom: 15px; border: 3px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        /* Musik & YouTube Thumbnail */
+        .music-area { text-align: center; margin-top: 25px; }
+        .music-img { width: 100%; max-width: 320px; border-radius: 20px; margin-bottom: 15px; border: 4px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
 
         /* Lock Screen */
-        #layar-kunci { position: fixed; inset: 0; background: var(--cream); z-index: 2000; display: flex; justify-content: center; align-items: center; }
-        .kotak-pin { background: white; padding: 40px; border-radius: 30px; text-align: center; width: 320px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
-        .input-p { width: 100%; padding: 12px; margin: 20px 0; border-radius: 12px; border: 1px solid #eee; text-align: center; font-size: 18px; outline: none; }
-        .wrap-p { position: relative; }
-        .mata { position: absolute; right: 15px; top: 32px; cursor: pointer; }
+        #lock-screen { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: flex; justify-content: center; align-items: center; }
+        .lock-card { background: white; padding: 45px; border-radius: 30px; text-align: center; width: 340px; box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
+        .pin-in { width: 100%; padding: 14px; margin: 20px 0; border-radius: 12px; border: 1px solid #f0f0f0; text-align: center; font-size: 18px; outline: none; background: #fafafa; }
+        .pin-wrap { position: relative; }
+        .eye { position: absolute; right: 15px; top: 32px; cursor: pointer; opacity: 0.6; }
 
-        .btn { background: var(--hijau); color: white; border: none; padding: 10px 25px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .btn:hover { opacity: 0.8; }
+        .btn-green { background: var(--green); color: white; border: none; padding: 12px 28px; border-radius: 25px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-green:hover { filter: brightness(0.9); transform: scale(1.03); }
         
-        .watermark { position: fixed; bottom: 20px; right: 25px; font-family: 'Dancing Script'; opacity: 0.4; font-size: 18px; }
+        /* Watermark - FIXED NAME */
+        .watermark { position: fixed; bottom: 20px; right: 25px; font-family: 'Dancing Script'; opacity: 0.6; font-size: 19px; color: var(--brown); pointer-events: none; }
         .hidden { display: none !important; }
     </style>
 </head>
-<body onload="muatData()">
+<body onload="initApp()">
 
-    <div id="layar-kunci">
-        <div class="kotak-pin">
+    <div id="lock-screen">
+        <div class="lock-card">
             <h1>Ruang Teduh Bersama Lynn 🔒</h1>
-            <div id="set-box">
-                <input type="password" id="pin1" class="input-p" placeholder="Buat PIN Kamu">
-                <button onclick="simpanPIN()" class="btn">Mulai ✨</button>
+            <div id="setup-pin">
+                <input type="password" id="p-new" class="pin-in" placeholder="Buat PIN Baru">
+                <button onclick="savePIN()" class="btn-green" style="width:100%">Mulai ✨</button>
             </div>
-            <div id="log-box" class="hidden">
-                <div class="wrap-p">
-                    <input type="password" id="pin-log" class="input-p" placeholder="Masukkan PIN">
-                    <span class="mata" onclick="intip()">👁️</span>
+            <div id="login-pin" class="hidden">
+                <div class="pin-wrap">
+                    <input type="password" id="p-log" class="pin-in" placeholder="Masukkan PIN">
+                    <span class="eye" onclick="peek()">👁️</span>
                 </div>
-                <button onclick="buka()" class="btn">Masuk ✨</button>
+                <button onclick="login()" class="btn-green" style="width:100%">Masuk ✨</button>
             </div>
         </div>
     </div>
 
     <div class="sidebar">
-        <div class="nav-btn" onclick="tab('tulis')">🖋️</div>
-        <div class="nav-btn" onclick="tab('rak')">📖</div>
-        <div class="nav-btn" onclick="tab('plan')">🎯</div>
-        <div class="nav-btn" onclick="tab('musik')">🎵</div>
+        <div class="nav-icon" title="Tulis Diary" onclick="tab('tulis')">🖋️</div>
+        <div class="nav-icon" title="Rak Buku" onclick="tab('rak')">📖</div>
+        <div class="nav-icon" title="Masa Depan" onclick="tab('plan')">🎯</div>
+        <div class="nav-icon" title="Musik" onclick="tab('musik')">🎵</div>
     </div>
 
     <div class="main">
-        <div class="kertas">
+        <div class="notebook">
             <div id="view-tulis">
-                <h1 id="txt-sapa">Sapaan...</h1>
-                <p class="sapaan-sub" id="txt-sub">Bagaimana harimu?</p>
-                <div style="display:flex; gap:10px; margin-bottom:10px">
-                    <button class="btn" style="padding:5px 15px; font-size:12px" onclick="setMood('😊')">😊 Senang</button>
-                    <button class="btn" style="padding:5px 15px; font-size:12px; background:#ddd; color:#666" onclick="setMood('😔')">😔 Sedih</button>
+                <h1 id="sapa-h1">Halo...</h1>
+                <p class="sub-greeting" id="sapa-p">Bagaimana perasaanmu hari ini?</p>
+                <div style="display:flex; gap:10px; margin-bottom:5px">
+                    <button class="btn-green" style="padding:5px 12px; font-size:11px" onclick="setM('😊')">😊 Senang</button>
+                    <button class="btn-green" style="padding:5px 12px; font-size:11px; background:#ddd; color:#777" onclick="setM('😔')">😔 Sedih</button>
                 </div>
-                <textarea id="isi-diary" class="area-tulis" placeholder="Tuliskan ceritamu..."></textarea>
+                <textarea id="diary-txt" class="paper-lines" placeholder="Tuangkan ceritamu di sini Lyn..."></textarea>
                 <div style="text-align:right; margin-top:15px">
-                    <button class="btn" onclick="simpanDiary()">Simpan Kenangan 💖</button>
+                    <button class="btn-green" onclick="saveD()">Simpan 💖</button>
                 </div>
             </div>
 
             <div id="view-rak" class="hidden">
                 <h1>Rak Buku Kenangan</h1>
-                <p class="sapaan-sub">Kumpulan memorimu di sini.</p>
-                <div class="arsip-scroll" id="daftar-arsip"></div>
+                <p class="sub-greeting">Kumpulan cerita yang sudah kamu simpan.</p>
+                <div class="archive-box" id="list-d"></div>
             </div>
 
             <div id="view-plan" class="hidden">
                 <h1>My Future Plan 🚀</h1>
-                <div class="grid-plan">
-                    <div class="item-plan"><h4>🎯 Impian</h4><textarea placeholder="Tulis mimpimu..."></textarea></div>
-                    <div class="item-plan"><h4>📚 Belajar</h4><textarea placeholder="Mau jago apa?"></textarea></div>
-                    <div class="item-plan"><h4>🌱 Habit</h4><textarea placeholder="Hal baik..."></textarea></div>
-                    <div class="item-plan"><h4>⭐ Wishlist</h4><textarea placeholder="Daftar keinginan..."></textarea></div>
+                <p class="sub-greeting">Target dan mimpi besar untuk masa depan.</p>
+                <div class="plan-grid">
+                    <div class="plan-card"><h4>🎯 IMPIAN</h4><textarea placeholder="Tulis mimpimu..."></textarea></div>
+                    <div class="plan-card"><h4>📚 BELAJAR</h4><textarea placeholder="Skill yang mau dipelajari..."></textarea></div>
+                    <div class="plan-card"><h4>🌱 HABIT</h4><textarea placeholder="Kebiasaan baik baru..."></textarea></div>
+                    <div class="plan-card"><h4>⭐ WISHLIST</h4><textarea placeholder="Barang/tempat impian..."></textarea></div>
                 </div>
             </div>
 
             <div id="view-musik" class="hidden">
                 <h1>Musik Penenang 🎵</h1>
-                <input type="text" id="url-musik" placeholder="Tempel link YouTube & Enter" style="width:100%; padding:12px; border-radius:12px; border:1px solid #eee; margin-top:15px; outline:none;">
-                <div class="musik-box" id="display-musik">
-                    <img src="https://img.freepik.com/free-vector/musical-notes-frame-with-text-space_23-2148525281.jpg" class="thumb-lagu">
-                    <p style="color:#aaa; font-size:13px;">Masukkan link YouTube untuk memutar gambar & musik.</p>
+                <p class="sub-greeting">Masukkan link YouTube untuk musik & gambar.</p>
+                <input type="text" id="yt-url" placeholder="Paste link video YouTube & tekan Enter..." style="width:100%; padding:14px; border-radius:15px; border:1px solid #eee; outline:none; background:#fafafa;">
+                <div class="music-area" id="music-ui">
+                    <img src="https://img.freepik.com/free-vector/hand-drawn-lofi-illustration_23-2149329931.jpg" class="music-img">
+                    <p style="color:#aaa; font-size:13px;">Belum ada melodi yang diputar.</p>
                 </div>
             </div>
         </div>
@@ -136,57 +141,55 @@
     <div class="watermark">A little space by Lyn 🕊️</div>
 
     <script>
-        let moodSkrg = "😊";
+        let mood = "😊";
         
-        function muatData() {
-            // Sapaan Waktu
-            const jam = new Date().getHours();
-            const s = document.getElementById('txt-sapa'), ss = document.getElementById('txt-sub');
-            if(jam < 11) { s.innerText="Pagi...."; ss.innerText="Ayo mulai harimu dengan tenang."; }
-            else if(jam < 15) { s.innerText="Siang...."; ss.innerText="Istirahat sebentar, ceritakan harimu."; }
-            else if(jam < 18) { s.innerText="Sore...."; ss.innerText="Langit mulai teduh, waktunya menulis."; }
-            else { s.innerText="Malam...."; ss.innerText="Terima kasih sudah hebat hari ini."; }
+        function initApp() {
+            const h = new Date().getHours();
+            const hi = document.getElementById('sapa-h1'), p = document.getElementById('sapa-p');
+            if(h < 11) { hi.innerText="Pagi...."; p.innerText="Semangat untuk hari ini ya, Lyn."; }
+            else if(h < 15) { hi.innerText="Siang...."; p.innerText="Sudah makan siang belum?"; }
+            else if(h < 18) { hi.innerText="Sore...."; p.innerText="Langit sedang cantik, mari bercerita."; }
+            else { hi.innerText="Malam...."; p.innerText="Waktunya istirahat, kamu hebat hari ini."; }
 
-            // Cek PIN
-            if(localStorage.getItem('lynn_pin')) {
-                document.getElementById('set-box').classList.add('hidden');
-                document.getElementById('log-box').classList.remove('hidden');
+            if(localStorage.getItem('p_key')) {
+                document.getElementById('setup-pin').classList.add('hidden');
+                document.getElementById('login-pin').classList.remove('hidden');
             }
         }
 
-        function simpanPIN() { const p = document.getElementById('pin1').value; if(p) { localStorage.setItem('lynn_pin', p); location.reload(); } }
-        function buka() { if(document.getElementById('pin-log').value === localStorage.getItem('lynn_pin')) document.getElementById('layar-kunci').classList.add('hidden'); }
-        function intip() { const x = document.getElementById('pin-log'); x.type = x.type === 'password' ? 'text' : 'password'; }
+        function savePIN() { const pin = document.getElementById('p-new').value; if(pin) { localStorage.setItem('p_key', pin); location.reload(); } }
+        function login() { if(document.getElementById('p-log').value === localStorage.getItem('p_key')) document.getElementById('lock-screen').classList.add('hidden'); else alert("PIN Salah!"); }
+        function peek() { const x = document.getElementById('p-log'); x.type = x.type === 'password' ? 'text' : 'password'; }
 
-        function tab(t) {
+        function tab(n) {
             const ids = ['tulis', 'rak', 'plan', 'musik'];
-            ids.forEach(id => document.getElementById('view-'+id).classList.add('hidden'));
-            document.getElementById('view-'+t).classList.remove('hidden');
-            if(t === 'rak') renderArsip();
+            ids.forEach(i => document.getElementById('view-'+i).classList.add('hidden'));
+            document.getElementById('view-'+n).classList.remove('hidden');
+            if(n === 'rak') render();
         }
 
-        function setMood(m) { moodSkrg = m; }
+        function setM(m) { mood = m; }
 
-        function simpanDiary() {
-            const isi = document.getElementById('isi-diary').value; if(!isi) return;
-            let d = JSON.parse(localStorage.getItem('lynn_data') || '[]');
-            d.unshift({ jam: new Date().toLocaleString('id-ID'), m: moodSkrg, c: isi });
-            localStorage.setItem('lynn_data', JSON.stringify(d));
-            document.getElementById('isi-diary').value = "";
+        function saveD() {
+            const c = document.getElementById('diary-txt').value; if(!c) return;
+            let d = JSON.parse(localStorage.getItem('l_db') || '[]');
+            d.unshift({ time: new Date().toLocaleString('id-ID'), m: mood, txt: c });
+            localStorage.setItem('l_db', JSON.stringify(d));
+            document.getElementById('diary-txt').value = "";
             tab('rak');
         }
 
-        function renderArsip() {
-            const d = JSON.parse(localStorage.getItem('lynn_data') || '[]');
-            document.getElementById('daftar-arsip').innerHTML = d.map(x => `
-                <div class="kartu-diary">
-                    <small><b>${x.jam} | ${x.m}</b></small>
-                    <p style="font-family:'Indie Flower'; font-size:20px; margin-top:8px; white-space:pre-wrap;">${x.c}</p>
+        function render() {
+            const d = JSON.parse(localStorage.getItem('l_db') || '[]');
+            document.getElementById('list-d').innerHTML = d.map(item => `
+                <div class="diary-entry">
+                    <small><b>${item.time} | Mood: ${item.m}</b></small>
+                    <p style="font-family:'Indie Flower'; font-size:20px; margin-top:8px; white-space:pre-wrap; line-height:30px;">${item.txt}</p>
                 </div>
             `).join('');
         }
 
-        document.getElementById('url-musik').addEventListener('keypress', e => {
+        document.getElementById('yt-url').addEventListener('keypress', e => {
             if(e.key === 'Enter') {
                 const url = e.target.value;
                 let id = "";
@@ -194,9 +197,9 @@
                 else if(url.includes('youtu.be/')) id = url.split('youtu.be/')[1];
 
                 if(id) {
-                    document.getElementById('display-musik').innerHTML = `
-                        <img src="https://img.youtube.com/vi/${id}/mqdefault.jpg" class="thumb-lagu">
-                        <iframe width="100%" height="150" src="https://www.youtube.com/embed/${id}?autoplay=1" frameborder="0" style="border-radius:15px;"></iframe>
+                    document.getElementById('music-ui').innerHTML = `
+                        <img src="https://img.youtube.com/vi/${id}/maxresdefault.jpg" class="music-img">
+                        <iframe width="100%" height="100" src="https://www.youtube.com/embed/${id}?autoplay=1" frameborder="0" style="border-radius:15px; margin-top:10px;"></iframe>
                     `;
                 }
                 e.target.value = "";
