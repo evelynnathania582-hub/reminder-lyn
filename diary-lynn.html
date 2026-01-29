@@ -10,7 +10,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Quicksand', sans-serif; background: var(--bg); color: var(--brown); height: 100vh; display: flex; overflow: hidden; }
 
-        /* SIDEBAR */
+        /* SIDEBAR NAVIGATION */
         .sidebar { width: 70px; background: white; height: 100%; display: flex; flex-direction: column; align-items: center; padding-top: 35px; border-right: 1px solid #eee; z-index: 100; transition: 0.3s; }
         .sidebar:hover { width: 130px; }
         .nav-item { display: flex; align-items: center; width: 100%; padding: 15px 22px; cursor: pointer; opacity: 0.4; transition: 0.2s; }
@@ -18,47 +18,54 @@
         .nav-text { display: none; margin-left: 15px; font-size: 14px; font-weight: bold; }
         .sidebar:hover .nav-text { display: block; }
 
-        /* KONTEN */
+        /* MAIN CONTAINER */
         .container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 20px; }
-        .notebook { background: white; width: 100%; max-width: 800px; height: 90vh; border-radius: 25px; padding: 35px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); display: flex; flex-direction: column; position: relative; }
-
-        /* KALIBRASI GARIS BUKU */
-        .paper { 
-            flex: 1; margin-top: 15px; border: none; outline: none;
-            font-family: 'Indie Flower', cursive; 
-            font-size: 20px; 
-            line-height: 36px; /* Tinggi baris teks */
-            background-image: linear-gradient(var(--line) 1px, transparent 1px);
-            background-size: 100% 36px; /* Harus sama dengan line-height */
-            background-attachment: local;
-            padding: 4px 10px; resize: none; color: #444; overflow-y: auto;
+        .notebook { 
+            background: white; width: 95%; max-width: 1000px; height: 90vh; 
+            border-radius: 25px; padding: 40px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); 
+            display: flex; flex-direction: column; position: relative; 
         }
 
-        /* HEADER & MOOD */
-        h1 { font-family: 'Dancing Script'; font-size: 32px; margin-bottom: 5px; }
-        .mood-row { display: flex; gap: 10px; margin: 10px 0; }
-        .mood-btn { padding: 6px 14px; border-radius: 20px; border: 1px solid #eee; cursor: pointer; font-size: 12px; background: #fff; transition: 0.3s; }
+        /* PAPER STYLE (FIXED FULL LINE) */
+        .paper-wrapper { flex: 1; width: 100%; margin-top: 10px; display: flex; }
+        .paper { 
+            width: 100%; height: 100%; border: none; outline: none;
+            font-family: 'Indie Flower', cursive; font-size: 22px; line-height: 40px;
+            background-image: linear-gradient(transparent 97%, var(--line) 97%);
+            background-size: 100% 40px; background-attachment: local;
+            padding: 0 5px; resize: none; color: #444; overflow-y: auto;
+        }
+
+        /* TARGET / STICKY NOTES STYLE */
+        .target-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .sticky-note { 
+            padding: 20px; border-radius: 10px; position: relative; 
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.05); transform: rotate(-1deg);
+            transition: 0.3s; height: 180px; display: flex; flex-direction: column;
+        }
+        .sticky-note:nth-child(even) { transform: rotate(1.5deg); }
+        .sticky-note:hover { transform: scale(1.05) rotate(0deg); z-index: 5; box-shadow: 10px 10px 20px rgba(0,0,0,0.1); }
+        
+        .note-1 { background: #fff9c4; } .note-2 { background: #e1f5fe; }
+        .note-3 { background: #f1f8e9; } .note-4 { background: #fce4ec; }
+
+        .sticky-note h4 { font-family: 'Dancing Script'; font-size: 22px; margin-bottom: 10px; border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 5px; }
+        .sticky-note textarea { 
+            width: 100%; flex: 1; border: none; background: transparent; 
+            outline: none; font-family: 'Indie Flower'; font-size: 18px; resize: none; color: #555;
+        }
+
+        /* OTHER STYLES */
+        h1 { font-family: 'Dancing Script'; font-size: 36px; }
+        .mood-row { display: flex; gap: 10px; margin: 15px 0; }
+        .mood-btn { padding: 8px 18px; border-radius: 20px; border: 1px solid #eee; cursor: pointer; font-size: 14px; background: #fff; transition: 0.3s; }
         .mood-btn.active { background: var(--green); color: white; border-color: var(--green); }
-
-        /* PLAN & ARSIP */
-        .plan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-        .plan-card { padding: 12px; border-radius: 15px; border: 1px solid #f5f5f5; }
-        .plan-card:nth-child(1) { background: #fdfaf2; } .plan-card:nth-child(2) { background: #f9fbf2; }
-        .plan-card:nth-child(3) { background: #f4f7f9; } .plan-card:nth-child(4) { background: #fcf4f4; }
-        .plan-card textarea { width: 100%; height: 60px; border: none; background: transparent; outline: none; font-family: 'Indie Flower'; font-size: 18px; resize: none; }
-        .quotes { text-align: center; margin-top: 25px; font-family: 'Dancing Script'; font-size: 19px; opacity: 0.6; }
-
-        .archive-list { overflow-y: auto; flex: 1; }
-        .diary-item { background: #fffdf9; padding: 18px; border-radius: 12px; border-left: 5px solid var(--green); margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
-
-        /* LOCK SCREEN */
+        .btn-save { background: var(--green); color: white; border: none; padding: 12px 35px; border-radius: 25px; cursor: pointer; font-weight: bold; align-self: flex-end; }
+        .watermark { position: fixed; bottom: 20px; right: 25px; font-family: 'Dancing Script'; opacity: 0.6; font-size: 20px; pointer-events: none; }
+        
         #lock { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: flex; align-items: center; justify-content: center; }
         .lock-box { background: white; padding: 40px; border-radius: 30px; text-align: center; width: 320px; box-shadow: 0 20px 50px rgba(0,0,0,0.08); }
-        .pin-input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #f0f0f0; text-align: center; font-size: 18px; outline: none; background: #fafafa; margin: 20px 0; }
-        .eye-btn { position: absolute; right: 15px; top: 15px; cursor: pointer; }
-
-        .btn-green { background: var(--green); color: white; border: none; padding: 10px 25px; border-radius: 20px; cursor: pointer; font-weight: bold; }
-        .watermark { position: fixed; bottom: 20px; right: 25px; font-family: 'Dancing Script'; opacity: 0.6; font-size: 19px; pointer-events: none; }
+        .pin-input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #f0f0f0; text-align: center; font-size: 18px; outline: none; margin: 20px 0; }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -69,15 +76,11 @@
             <h1>Ruang Teduh Bersama Lynn 🔒</h1>
             <div id="setup-pin">
                 <input type="password" id="p1" class="pin-input" placeholder="Buat PIN Baru">
-                <button onclick="savePIN()" class="btn-green" style="width:100%">Mulai ✨</button>
+                <button onclick="savePIN()" style="background:var(--green); color:white; border:none; width:100%; padding:10px; border-radius:10px; cursor:pointer;">Simpan PIN ✨</button>
             </div>
             <div id="login-pin" class="hidden">
-                <div style="position:relative;">
-                    <input type="password" id="plog" class="pin-input" placeholder="Masukkan PIN">
-                    <span class="eye-btn" onclick="toggle()">👁️</span>
-                </div>
-                <button onclick="login()" class="btn-green" style="width:100%">Masuk ✨</button>
-                <p onclick="alert('Clue: PIN rahasiamu.')" style="font-size:11px; margin-top:12px; cursor:pointer; opacity:0.5;">Lupa PIN?</p>
+                <input type="password" id="plog" class="pin-input" placeholder="Masukkan PIN">
+                <button onclick="login()" style="background:var(--green); color:white; border:none; width:100%; padding:10px; border-radius:10px; cursor:pointer;">Masuk ✨</button>
             </div>
         </div>
     </div>
@@ -91,42 +94,40 @@
 
     <div class="container">
         <div class="notebook">
-            <div id="page-write">
+            <div id="page-write" style="display:flex; flex-direction:column; height:100%;">
                 <h1 id="hi-h1">Halo...</h1>
-                <p id="hi-p" style="font-size:13px; opacity:0.6;"></p>
+                <p id="hi-p" style="font-size:14px; opacity:0.6;"></p>
                 <div class="mood-row">
                     <div class="mood-btn active" onclick="setM('😊 Senang', this)">😊 Senang</div>
                     <div class="mood-btn" onclick="setM('😔 Sedih', this)">😔 Sedih</div>
                     <div class="mood-btn" onclick="setM('✨ Semangat', this)">✨ Semangat</div>
                 </div>
-                <textarea id="diary-box" class="paper" placeholder="Tuliskan ceritamu di sini..."></textarea>
-                <div style="text-align:right; margin-top:10px;">
-                    <button class="btn-green" onclick="saveDiary()">Simpan 💖</button>
+                <div class="paper-wrapper">
+                    <textarea id="diary-box" class="paper" placeholder="Tuangkan isi hatimu di sini..."></textarea>
                 </div>
-            </div>
-
-            <div id="page-rak" class="hidden archive-list">
-                <h1>Rak Buku Kenangan</h1>
-                <div id="diary-list" style="margin-top:15px;"></div>
+                <button class="btn-save" onclick="saveDiary()">Simpan Kenangan 💖</button>
             </div>
 
             <div id="page-plan" class="hidden">
-                <h1>My Future Plan 🚀</h1>
-                <div class="plan-grid">
-                    <div class="plan-card"><h4>🎯 IMPIAN</h4><textarea></textarea></div>
-                    <div class="plan-card"><h4>📚 BELAJAR</h4><textarea></textarea></div>
-                    <div class="plan-card"><h4>🌱 HABIT</h4><textarea></textarea></div>
-                    <div class="plan-card"><h4>⭐ WISHLIST</h4><textarea></textarea></div>
+                <h1>My Future Goals 🎯</h1>
+                <p style="font-size:14px; opacity:0.6;">Tuliskan mimpi-mimpi kecilmu di sini.</p>
+                <div class="target-container">
+                    <div class="sticky-note note-1"><h4>🎯 Impian Utama</h4><textarea placeholder="Apa mimpimu?"></textarea></div>
+                    <div class="sticky-note note-2"><h4>📚 Skill Baru</h4><textarea placeholder="Mau belajar apa?"></textarea></div>
+                    <div class="sticky-note note-3"><h4>🌱 Kebiasaan Baik</h4><textarea placeholder="Mulai dari hal kecil..."></textarea></div>
+                    <div class="sticky-note note-4"><h4>⭐ Wishlist</h4><textarea placeholder="Ingin punya apa?"></textarea></div>
                 </div>
-                <div class="quotes">"Setiap langkah kecil membawamu lebih dekat ke tujuan."</div>
+                <p style="text-align:center; margin-top:30px; font-family:'Dancing Script'; font-size:22px; opacity:0.7;">"Langkah besar dimulai dari catatan kecil."</p>
             </div>
 
+            <div id="page-rak" class="hidden" style="overflow-y:auto;">
+                <h1>Rak Buku Kenangan</h1>
+                <div id="diary-list" style="margin-top:20px;"></div>
+            </div>
             <div id="page-music" class="hidden" style="text-align:center;">
-                <h1>Musik Penenang 🎵</h1>
+                <h1>Musik Rileks 🎵</h1>
                 <input type="text" id="yt-in" placeholder="Link YouTube & Enter..." style="width:100%; padding:12px; border-radius:12px; border:1px solid #eee; outline:none; margin:15px 0;">
-                <div id="m-ui">
-                    <img src="https://img.freepik.com/free-vector/hand-drawn-lofi-illustration_23-2149329931.jpg" style="width:100%; max-width:280px; border-radius:20px; box-shadow:0 10px 20px rgba(0,0,0,0.1);">
-                </div>
+                <div id="m-ui"><img src="https://img.freepik.com/free-vector/hand-drawn-lofi-illustration_23-2149329931.jpg" style="width:100%; max-width:280px; border-radius:20px;"></div>
             </div>
         </div>
     </div>
@@ -135,69 +136,47 @@
 
     <script>
         let curMood = "😊 Senang";
-
         function initApp() {
             const h = new Date().getHours();
             const h1 = document.getElementById('hi-h1'), hp = document.getElementById('hi-p');
-            if(h < 11) { h1.innerText="Selamat Pagi...."; hp.innerText="Awali hari dengan tenang dan pikiran yang jernih."; }
-            else if(h < 15) { h1.innerText="Selamat Siang...."; hp.innerText="Jangan lupa istirahat sejenak di tengah kesibukanmu."; }
-            else if(h < 18) { h1.innerText="Selamat Sore...."; hp.innerText="Langit mulai teduh, waktunya merenung sejenak."; }
-            else { h1.innerText="Selamat Malam...."; hp.innerText="Terima kasih sudah berjuang dengan baik hari ini."; }
-
-            if(localStorage.getItem('lyn_pin_pribadi')) {
+            if(h < 11) { h1.innerText="Selamat Pagi...."; hp.innerText="Awali hari dengan tenang."; }
+            else if(h < 15) { h1.innerText="Selamat Siang...."; hp.innerText="Jangan lupa istirahat sejenak."; }
+            else if(h < 18) { h1.innerText="Selamat Sore...."; hp.innerText="Langit mulai teduh."; }
+            else { h1.innerText="Selamat Malam...."; hp.innerText="Kamu hebat hari ini."; }
+            if(localStorage.getItem('lyn_pin_v4')) {
                 document.getElementById('setup-pin').classList.add('hidden');
                 document.getElementById('login-pin').classList.remove('hidden');
             }
         }
-
-        function savePIN() { const p = document.getElementById('p1').value; if(p) { localStorage.setItem('lyn_pin_pribadi', p); location.reload(); } }
-        function login() { if(document.getElementById('plog').value === localStorage.getItem('lyn_pin_pribadi')) document.getElementById('lock').classList.add('hidden'); else alert("PIN Salah!"); }
-        function toggle() { const x = document.getElementById('plog'); x.type = x.type === 'password' ? 'text' : 'password'; }
-
+        function savePIN() { const p = document.getElementById('p1').value; if(p) { localStorage.setItem('lyn_pin_v4', p); location.reload(); } }
+        function login() { if(document.getElementById('plog').value === localStorage.getItem('lyn_pin_v4')) document.getElementById('lock').classList.add('hidden'); else alert("PIN Salah!"); }
         function page(id) {
             document.querySelectorAll('.notebook > div').forEach(i => i.classList.add('hidden'));
             document.getElementById('page-'+id).classList.remove('hidden');
             if(id === 'rak') renderArchive();
         }
-
         function setM(m, el) {
             curMood = m;
             document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
         }
-
         function saveDiary() {
             const text = document.getElementById('diary-box').value; if(!text) return;
-            let data = JSON.parse(localStorage.getItem('lyn_db_data') || '[]');
+            let data = JSON.parse(localStorage.getItem('lyn_db_v4') || '[]');
             data.unshift({ date: new Date().toLocaleString('id-ID'), mood: curMood, content: text });
-            localStorage.setItem('lyn_db_data', JSON.stringify(data));
+            localStorage.setItem('lyn_db_v4', JSON.stringify(data));
             document.getElementById('diary-box').value = "";
             page('rak');
         }
-
         function renderArchive() {
-            const data = JSON.parse(localStorage.getItem('lyn_db_data') || '[]');
+            const data = JSON.parse(localStorage.getItem('lyn_db_v4') || '[]');
             document.getElementById('diary-list').innerHTML = data.map(item => `
-                <div class="diary-item">
+                <div style="background:#fffcf9; padding:20px; border-radius:15px; border-left:5px solid var(--green); margin-bottom:20px;">
                     <small><b>${item.date} | ${item.mood}</b></small>
-                    <p style="font-family:'Indie Flower'; font-size:20px; white-space:pre-wrap; line-height:34px; margin-top:8px;">${item.content}</p>
+                    <p style="font-family:'Indie Flower'; font-size:20px; line-height:30px; margin-top:10px;">${item.content}</p>
                 </div>
             `).join('');
         }
-
-        document.getElementById('yt-in').addEventListener('keypress', e => {
-            if(e.key === 'Enter') {
-                const url = e.target.value;
-                let id = url.includes('v=') ? url.split('v=')[1].split('&')[0] : url.split('/').pop();
-                if(id) {
-                    document.getElementById('m-ui').innerHTML = `
-                        <img src="https://img.youtube.com/vi/${id}/maxresdefault.jpg" style="width:100%; max-width:280px; border-radius:20px; border:4px solid white; box-shadow:0 10px 20px rgba(0,0,0,0.1);">
-                        <iframe width="100%" height="100" src="https://www.youtube.com/embed/${id}?autoplay=1" frameborder="0" style="border-radius:15px; margin-top:10px;"></iframe>
-                    `;
-                }
-                e.target.value = "";
-            }
-        });
     </script>
 </body>
 </html>
