@@ -212,6 +212,123 @@
             ];
             document.getElementById('quote').innerText = q[Math.floor(Math.random()*q.length)];
         }
-    </script>
+    <script>
+    let diaries = JSON.parse(localStorage.getItem('n4t3v_diary')) || [];
+    let selectedMood = "Senang";
+    
+    // SISTEM PIN CUSTOM
+    function checkPass() {
+        const passInput = document.getElementById('passInput');
+        const userPass = passInput.value;
+        const savedPass = localStorage.getItem('n4t3v_pin');
+
+        if (!savedPass) {
+            // Jika belum ada PIN, maka input pertama akan jadi PIN baru
+            if (userPass.length < 4) {
+                alert("Buat PIN minimal 4 karakter ya!");
+            } else {
+                localStorage.setItem('n4t3v_pin', userPass);
+                alert("PIN berhasil dibuat! Ingat baik-baik ya ✨");
+                document.getElementById('login-screen').style.display = 'none';
+            }
+        } else {
+            // Jika sudah ada PIN, cek apakah inputnya sama
+            if (userPass === savedPass) {
+                document.getElementById('login-screen').style.display = 'none';
+            } else {
+                alert("PIN salah, Lyn! Coba diingat lagi atau cek clue.");
+            }
+        }
+    }
+
+    // Fungsi ganti clue (Bisa kamu edit manual di sini)
+    const clueText = "Nama kesayangan atau tanggal lahirmu";
+
+    function togglePass() {
+        const inp = document.getElementById('passInput');
+        inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+
+    // --- SISANYA TETAP SAMA ---
+    function showTab(id) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if(id === 'tab-shelf') renderShelf();
+        if(id === 'tab-target') updateQuote();
+    }
+
+    function setMood(mood, el) {
+        document.querySelectorAll('.mood-item').forEach(m => m.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedMood = mood;
+    }
+
+    const hours = new Date().getHours();
+    const greet = hours < 11 ? "Pagi" : hours < 15 ? "Siang" : hours < 19 ? "Sore" : "Malam";
+    document.getElementById('greeting').innerText = `Selamat ${greet}, nikmati harimu dengan menulis diary ✨`;
+
+    function saveDiary() {
+        const text = document.getElementById('diaryInput').value;
+        if(!text) return;
+        const now = new Date();
+        const entry = {
+            id: Date.now(),
+            date: now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
+            time: now.toLocaleTimeString('id-ID'), // Simpan Jam:Menit:Detik
+            mood: selectedMood,
+            content: text
+        };
+        diaries.unshift(entry);
+        localStorage.setItem('n4t3v_diary', JSON.stringify(diaries));
+        document.getElementById('diaryInput').value = '';
+        alert("Kenangan tersimpan!");
+    }
+
+    function renderShelf() {
+        const list = document.getElementById('shelfList');
+        list.innerHTML = '';
+        diaries.forEach((d, i) => {
+            const div = document.createElement('div');
+            div.className = 'book-card';
+            div.innerHTML = `
+                <div class="book-time">${d.date} | ${d.time} | Mood: ${d.mood}</div>
+                <div style="font-family:'Indie Flower'; font-size:16px">${d.content}</div>
+                <div class="book-actions">
+                    <button class="btn-action" onclick="editDiary(${i})">Edit</button>
+                    <button class="btn-action" style="color:red" onclick="deleteDiary(${i})">Hapus</button>
+                </div>
+            `;
+            list.appendChild(div);
+        });
+    }
+
+    function editDiary(i) {
+        const newText = prompt("Ubah kenanganmu:", diaries[i].content);
+        if(newText) {
+            diaries[i].content = newText;
+            localStorage.setItem('n4t3v_diary', JSON.stringify(diaries));
+            renderShelf();
+        }
+    }
+
+    function deleteDiary(i) {
+        if(confirm("Hapus kenangan ini?")) {
+            diaries.splice(i, 1);
+            localStorage.setItem('n4t3v_diary', JSON.stringify(diaries));
+            renderShelf();
+        }
+    }
+
+    function updateQuote() {
+        const q = [
+            "Jadilah versi terbaik dari dirimu sendiri.",
+            "Hari yang cerah dimulai dari pikiran yang positif.",
+            "Jangan berhenti sampai kamu bangga.",
+            "Setiap hari adalah kesempatan baru.",
+            "Lakukan hal kecil dengan cinta yang besar."
+        ];
+        document.getElementById('quote').innerText = q[Math.floor(Math.random()*q.length)];
+    }
+</script>
 </body>
 </html>
