@@ -50,6 +50,10 @@
 
         /* TARGET (STICKY NOTES) */
         .sticky-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .note-wrapper {
+    display: flex;
+    flex-direction: column;
+}
         .note { background: #fff9c4; padding: 20px; aspect-ratio: 1/1; box-shadow: 5px 5px 15px rgba(0,0,0,0.05); transform: rotate(-1deg); font-family: 'Indie Flower'; border: none; outline: none; resize: none; font-size: 17px; }
         .note:nth-child(even) { background: #cfd8dc; transform: rotate(2deg); }
         .quote-area { margin-top: 40px; text-align: center; font-style: italic; font-size: 13px; color: var(--sage); min-height: 40px; }
@@ -105,12 +109,27 @@
         </section>
 
         <section id="targets" class="tab-content">
-            <div class="sticky-grid">
-                <textarea class="note" placeholder="💫 Small Wins Today...">📌 </textarea>
-                <textarea class="note" placeholder="💫 Gentle Reminders...">📌 </textarea>
-                <textarea class="note" placeholder="💫 Future Dreams...">📌 </textarea>
-                <textarea class="note" placeholder="💫 Self Care Plan...">📌 </textarea>
-            </div>
+           <div class="sticky-grid">
+    <div class="note-wrapper">
+        <h4 style="font-size: 12px; margin-bottom: 5px; color: var(--sage); font-weight: bold;">✨ Small Wins</h4>
+        <textarea class="note" placeholder="💫 Small Wins Today...">📌 </textarea>
+    </div>
+
+    <div class="note-wrapper">
+        <h4 style="font-size: 12px; margin-bottom: 5px; color: var(--sage); font-weight: bold;">🕊️ Reminders</h4>
+        <textarea class="note" placeholder="💫 Gentle Reminders...">📌 </textarea>
+    </div>
+
+    <div class="note-wrapper">
+        <h4 style="font-size: 12px; margin-bottom: 5px; color: var(--sage); font-weight: bold;">🌙 Future Dreams</h4>
+        <textarea class="note" placeholder="💫 Future Dreams...">📌 </textarea>
+    </div>
+
+    <div class="note-wrapper">
+        <h4 style="font-size: 12px; margin-bottom: 5px; color: var(--sage); font-weight: bold;">🌿 Self Care</h4>
+        <textarea class="note" placeholder="💫 Self Care Plan...">📌 </textarea>
+    </div>
+</div>
             <div class="quote-area" id="quoteText"></div>
         </section>
     </div>
