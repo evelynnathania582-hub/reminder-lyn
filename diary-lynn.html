@@ -10,52 +10,59 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Quicksand', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-        /* WATERMARK */
-        .watermark { position: fixed; top: 10px; right: 10px; font-size: 10px; opacity: 0.4; letter-spacing: 1px; z-index: 1001; }
+        .watermark { position: fixed; top: 15px; right: 15px; font-size: 10px; opacity: 0.4; letter-spacing: 1px; z-index: 1001; font-weight: bold; }
 
-        /* SCREEN: LOGIN */
-        #login-screen { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; transition: 0.5s; }
-        .login-box { background: white; padding: 30px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; width: 300px; }
-        .pass-input { position: relative; margin: 20px 0; }
-        input[type="password"], input[type="text"] { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #ddd; outline: none; }
-        .toggle-pass { position: absolute; right: 10px; top: 10px; cursor: pointer; font-size: 14px; }
-        .clue-text { font-size: 11px; color: var(--sage); margin-top: 10px; cursor: pointer; text-decoration: underline; }
+        /* LOGIN SCREEN */
+        #login-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 2000; }
+        .login-box { background: white; padding: 40px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; width: 320px; }
+        .login-box h2 { font-family: 'Dancing Script'; margin-bottom: 20px; color: var(--sage); }
+        .pass-input-container { position: relative; margin-bottom: 20px; }
+        input[type="password"], input[type="text"] { width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid #eee; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--sage); }
+        .toggle-eye { position: absolute; right: 12px; top: 12px; cursor: pointer; opacity: 0.6; }
 
-        /* LAYOUT UTAMA */
-        header { text-align: center; padding: 40px 0; }
-        h1 { font-family: 'Dancing Script', cursive; font-size: 32px; color: var(--sage); }
+        /* HEADER */
+        header { text-align: center; padding: 50px 20px 20px; }
+        h1 { font-family: 'Dancing Script', cursive; font-size: 35px; color: var(--sage); }
 
-        .container { max-width: 600px; margin: auto; padding: 20px; padding-bottom: 100px; }
-        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        /* CONTENT AREA */
+        .container { max-width: 600px; margin: auto; padding: 20px 20px 120px; }
+        .tab-content { display: none; animation: fadeIn 0.5s ease; }
         .active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* MENU: CATATAN DIARY */
-        .welcome-msg { font-family: 'Dancing Script'; font-size: 24px; color: var(--sage); text-align: center; margin-bottom: 20px; }
-        .mood-selector { display: flex; justify-content: space-around; margin-bottom: 20px; background: white; padding: 15px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
-        .mood-item { text-align: center; cursor: pointer; filter: grayscale(1); transition: 0.3s; }
-        .mood-item:hover, .mood-item.selected { filter: grayscale(0); transform: scale(1.1); }
+        /* CATATAN DIARY */
+        .greet { font-family: 'Dancing Script'; font-size: 24px; color: var(--sage); text-align: center; margin-bottom: 15px; }
+        .mood-box { display: flex; justify-content: space-around; background: white; padding: 15px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .mood-item { text-align: center; cursor: pointer; filter: grayscale(1); transition: 0.3s; opacity: 0.6; }
+        .mood-item.selected { filter: grayscale(0); opacity: 1; transform: scale(1.1); }
         .mood-item span { display: block; font-size: 10px; margin-top: 5px; font-weight: bold; }
 
-        .paper { background: var(--paper); background-image: linear-gradient(#e1e1e1 1px, transparent 1px); background-size: 100% 30px; padding: 30px 20px; border-radius: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); min-height: 400px; line-height: 30px; font-family: 'Indie Flower', cursive; font-size: 18px; border: none; width: 100%; outline: none; resize: none; }
+        .paper-container { position: relative; background: var(--paper); border-radius: 5px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); padding: 40px 20px 20px; }
+        .paper-lines { width: 100%; min-height: 400px; background: repeating-linear-gradient(transparent, transparent 29px, #e1e1e1 30px); border: none; outline: none; font-family: 'Indie Flower', cursive; font-size: 19px; line-height: 30px; resize: none; color: #444; }
 
-        /* MENU: RAK KENANGAN */
-        .book-card { background: white; padding: 20px; border-radius: 20px; margin-bottom: 15px; border-left: 5px solid var(--sage); position: relative; }
-        .book-time { font-size: 10px; font-weight: bold; color: var(--sage); margin-bottom: 10px; }
-        .book-actions { display: flex; gap: 10px; margin-top: 10px; }
-        .btn-action { font-size: 11px; font-weight: bold; cursor: pointer; color: var(--sage); background: none; border: none; }
+        /* RAK KENANGAN */
+        .memory-card { background: white; padding: 20px; border-radius: 20px; margin-bottom: 15px; border-left: 6px solid var(--sage); box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .meta-data { font-size: 10px; font-weight: bold; color: var(--sage); margin-bottom: 8px; text-transform: uppercase; }
+        .memory-text { font-family: 'Indie Flower'; font-size: 17px; line-height: 1.5; white-space: pre-wrap; }
+        .card-btns { margin-top: 15px; display: flex; gap: 15px; }
+        .card-btns button { background: none; border: none; color: var(--sage); font-weight: bold; font-size: 12px; cursor: pointer; }
 
-        /* MENU: TARGET (STICKY NOTES) */
-        .sticky-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .sticky-note { background: #fff9c4; padding: 15px; aspect-ratio: 1/1; box-shadow: 5px 5px 10px rgba(0,0,0,0.05); transform: rotate(-2deg); font-family: 'Indie Flower'; font-size: 16px; border: none; outline: none; resize: none; }
-        .sticky-note:nth-child(even) { background: #c8e6c9; transform: rotate(2deg); }
-        .quotes-box { text-align: center; margin-top: 40px; font-style: italic; font-size: 13px; color: var(--sage); padding: 20px; }
+        /* TARGET (STICKY NOTES) */
+        .sticky-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .note { background: #fff9c4; padding: 20px; aspect-ratio: 1/1; box-shadow: 5px 5px 15px rgba(0,0,0,0.05); transform: rotate(-1deg); font-family: 'Indie Flower'; border: none; outline: none; resize: none; font-size: 17px; }
+        .note:nth-child(even) { background: #cfd8dc; transform: rotate(2deg); }
+        .quote-area { margin-top: 40px; text-align: center; font-style: italic; font-size: 13px; color: var(--sage); min-height: 40px; }
 
-        /* NAVIGASI BAWAH */
-        nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: white; padding: 10px 25px; border-radius: 50px; display: flex; gap: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .nav-item { position: relative; cursor: pointer; font-size: 24px; display: flex; flex-direction: column; align-items: center; }
-        .nav-item span { position: absolute; bottom: -20px; font-size: 10px; opacity: 0; transition: 0.3s; white-space: nowrap; font-weight: bold; }
-        .nav-item:hover span { opacity: 1; bottom: 35px; }
+        /* NAVIGATION */
+        nav { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); background: white; padding: 12px 30px; border-radius: 50px; display: flex; gap: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 1000; }
+        .nav-btn { position: relative; cursor: pointer; font-size: 24px; transition: 0.3s; }
+        .nav-btn .label { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); background: var(--sage); color: white; padding: 4px 10px; border-radius: 10px; font-size: 10px; opacity: 0; pointer-events: none; transition: 0.3s; white-space: nowrap; }
+        .nav-btn:hover .label { opacity: 1; bottom: 45px; }
+        .nav-btn:hover { transform: translateY(-5px); }
+
+        .btn-main { background: var(--sage); color: white; border: none; padding: 15px; border-radius: 50px; width: 100%; margin-top: 20px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-main:hover { opacity: 0.9; }
     </style>
 </head>
 <body>
@@ -64,271 +71,171 @@
 
     <div id="login-screen">
         <div class="login-box">
-            <h1>Unlock Space</h1>
-            <div class="pass-input">
-                <input type="password" id="passInput" placeholder="Sandi...">
-                <span class="toggle-pass" onclick="togglePass()">👁️</span>
+            <h2>Welcome Back</h2>
+            <div class="pass-input-container">
+                <input type="password" id="passInput" placeholder="Masukkan PIN...">
+                <span class="toggle-eye" onclick="toggleView()">👁️</span>
             </div>
-            <button class="btn-action" style="background:var(--sage); color:white; padding:10px 20px; border-radius:10px" onclick="checkPass()">Masuk</button>
-            <p class="clue-text" onclick="alert('Clue: Nama panggilanku (4 huruf kecil)')">Lupa sandi?</p>
+            <button class="btn-main" onclick="handleLogin()">Masuk</button>
+            <p id="clue-btn" style="font-size: 11px; margin-top: 15px; cursor: pointer; text-decoration: underline;" onclick="showClue()">Lupa PIN?</p>
         </div>
     </div>
 
     <header>
-        <h1>A Little Space</h1>
+        <h1>A Little Space by N4T3V</h1>
     </header>
 
     <div class="container">
-        <section id="tab-write" class="tab-content active">
-            <p class="welcome-msg" id="greeting"></p>
-            <div class="mood-selector">
-                <div class="mood-item" onclick="setMood('Senang', this)">😊<span>Senang</span></div>
-                <div class="mood-item" onclick="setMood('Sedih', this)">😢<span>Sedih</span></div>
-                <div class="mood-item" onclick="setMood('Bad Mood', this)">😒<span>Bad Mood</span></div>
-                <div class="mood-item" onclick="setMood('Semangat', this)">🔥<span>Semangat</span></div>
+        <section id="diary" class="tab-content active">
+            <p class="greet" id="greetText"></p>
+            <div class="mood-box">
+                <div class="mood-item selected" onclick="pickMood('Senang', this)">😊<span>Senang</span></div>
+                <div class="mood-item" onclick="pickMood('Sedih', this)">😢<span>Sedih</span></div>
+                <div class="mood-item" onclick="pickMood('Bad Mood', this)">😒<span>Bad Mood</span></div>
+                <div class="mood-item" onclick="pickMood('Semangat', this)">🔥<span>Semangat</span></div>
             </div>
-            <textarea id="diaryInput" class="paper" placeholder="Tuliskan ceritamu di sini..."></textarea>
-            <button class="btn-action" style="width:100%; margin-top:20px; background:var(--sage); color:white; padding:15px; border-radius:50px" onclick="saveDiary()">Simpan Kenangan ✨</button>
+            <div class="paper-container">
+                <textarea id="diaryEntry" class="paper-lines" placeholder="Tuliskan hari-harimu di sini..."></textarea>
+            </div>
+            <button class="btn-main" onclick="saveToMemories()">Simpan ke Rak Kenangan ✨</button>
         </section>
 
-        <section id="tab-shelf" class="tab-content">
-            <div id="shelfList"></div>
+        <section id="memories" class="tab-content">
+            <div id="memoryList"></div>
         </section>
 
-        <section id="tab-target" class="tab-content">
-            <div class="sticky-container">
-                <textarea class="sticky-note" placeholder="Plan 1..."></textarea>
-                <textarea class="sticky-note" placeholder="Plan 2..."></textarea>
-                <textarea class="sticky-note" placeholder="Plan 3..."></textarea>
-                <textarea class="sticky-note" placeholder="Plan 4..."></textarea>
+        <section id="targets" class="tab-content">
+            <div class="sticky-grid">
+                <textarea class="note" placeholder="Tujuan 1..."></textarea>
+                <textarea class="note" placeholder="Tujuan 2..."></textarea>
+                <textarea class="note" placeholder="Tujuan 3..."></textarea>
+                <textarea class="note" placeholder="Tujuan 4..."></textarea>
             </div>
-            <div class="quotes-box" id="quote"></div>
+            <div class="quote-area" id="quoteText"></div>
         </section>
     </div>
 
     <nav>
-        <div class="nav-item" onclick="showTab('tab-write')">📝<span>Catatan Diary</span></div>
-        <div class="nav-item" onclick="showTab('tab-shelf')">📚<span>Rak Kenangan</span></div>
-        <div class="nav-item" onclick="showTab('tab-target')">🎯<span>Target</span></div>
+        <div class="nav-btn" onclick="openTab('diary')">📝<div class="label">Catatan Diary</div></div>
+        <div class="nav-btn" onclick="openTab('memories')">📚<div class="label">Rak Kenangan</div></div>
+        <div class="nav-btn" onclick="openTab('targets')">🎯<div class="label">Target</div></div>
     </nav>
 
     <script>
-        let diaries = JSON.parse(localStorage.getItem('n4t3v_diary')) || [];
-        let selectedMood = "Senang";
+        let db = JSON.parse(localStorage.getItem('n4t3v_storage')) || [];
+        let currentMood = "Senang";
 
-        // PASSWORD SYSTEM (Default: lyn)
-        function checkPass() {
-            const pass = document.getElementById('passInput').value;
-            if(pass === "lyn") {
+        // PIN SYSTEM
+        function handleLogin() {
+            const inp = document.getElementById('passInput').value;
+            const savedPin = localStorage.getItem('n4t3v_pin');
+
+            if (!savedPin) {
+                if (inp.length < 4) return alert("Buat PIN minimal 4 angka/huruf!");
+                localStorage.setItem('n4t3v_pin', inp);
+                alert("PIN Berhasil dibuat! ✨");
                 document.getElementById('login-screen').style.display = 'none';
             } else {
-                alert("Sandi salah!");
+                if (inp === savedPin) {
+                    document.getElementById('login-screen').style.display = 'none';
+                } else {
+                    alert("PIN salah, Lyn!");
+                }
             }
         }
 
-        function togglePass() {
-            const inp = document.getElementById('passInput');
-            inp.type = inp.type === 'password' ? 'text' : 'password';
+        function toggleView() {
+            const p = document.getElementById('passInput');
+            p.type = p.type === 'password' ? 'text' : 'password';
         }
 
-        // TAB SYSTEM
-        function showTab(id) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        function showClue() {
+            alert("Clue: PIN yang kamu buat pertama kali (Cek di ingatanmu!)");
+        }
+
+        // NAVIGATION
+        function openTab(id) {
+            document.querySelectorAll('.tab-content').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            if(id === 'tab-shelf') renderShelf();
-            if(id === 'tab-target') updateQuote();
+            if(id === 'memories') renderMemories();
+            if(id === 'targets') showNewQuote();
         }
 
-        // MOOD & GREETING
-        function setMood(mood, el) {
-            document.querySelectorAll('.mood-item').forEach(m => m.classList.remove('selected'));
+        // DIARY LOGIC
+        function pickMood(m, el) {
+            document.querySelectorAll('.mood-item').forEach(i => i.classList.remove('selected'));
             el.classList.add('selected');
-            selectedMood = mood;
+            currentMood = m;
         }
 
-        const hours = new Date().getHours();
-        const greet = hours < 11 ? "Pagi" : hours < 15 ? "Siang" : hours < 19 ? "Sore" : "Malam";
-        document.getElementById('greeting').innerText = `Selamat ${greet}, nikmati harimu dengan menulis diary ✨`;
+        const hrs = new Date().getHours();
+        const msg = hrs < 11 ? "Pagi" : hrs < 15 ? "Siang" : hrs < 19 ? "Sore" : "Malam";
+        document.getElementById('greetText').innerText = `Selamat ${msg}, nikmati hari-harimu dengan menulis diary ✨`;
 
-        // SAVE & RENDER
-        function saveDiary() {
-            const text = document.getElementById('diaryInput').value;
-            if(!text) return;
+        function saveToMemories() {
+            const txt = document.getElementById('diaryEntry').value;
+            if(!txt) return alert("Kertasnya masih kosong, Lyn...");
+            
             const now = new Date();
             const entry = {
                 id: Date.now(),
                 date: now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
                 time: now.toLocaleTimeString('id-ID'),
-                mood: selectedMood,
-                content: text
+                mood: currentMood,
+                content: txt
             };
-            diaries.unshift(entry);
-            localStorage.setItem('n4t3v_diary', JSON.stringify(diaries));
-            document.getElementById('diaryInput').value = '';
-            alert("Kenangan tersimpan!");
+
+            db.unshift(entry);
+            localStorage.setItem('n4t3v_storage', JSON.stringify(db));
+            document.getElementById('diaryEntry').value = '';
+            alert("Berhasil disimpan di Rak Kenangan! 🌿");
         }
 
-        function renderShelf() {
-            const list = document.getElementById('shelfList');
-            list.innerHTML = '';
-            diaries.forEach((d, i) => {
-                const div = document.createElement('div');
-                div.className = 'book-card';
-                div.innerHTML = `
-                    <div class="book-time">${d.date} | ${d.time} | Mood: ${d.mood}</div>
-                    <div style="font-family:'Indie Flower'; font-size:16px">${d.content}</div>
-                    <div class="book-actions">
-                        <button class="btn-action" onclick="editDiary(${i})">Edit</button>
-                        <button class="btn-action" style="color:red" onclick="deleteDiary(${i})">Hapus</button>
+        function renderMemories() {
+            const container = document.getElementById('memoryList');
+            container.innerHTML = db.length === 0 ? '<p style="text-align:center; opacity:0.5;">Belum ada kenangan yang disimpan.</p>' : '';
+            
+            db.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.innerHTML = `
+                    <div class="meta-data">${item.date} | ${item.time} | Mood: ${item.mood}</div>
+                    <div class="memory-text">${item.content}</div>
+                    <div class="card-btns">
+                        <button onclick="editMemory(${index})">Edit</button>
+                        <button style="color:#e57373" onclick="deleteMemory(${index})">Hapus</button>
                     </div>
                 `;
-                list.appendChild(div);
+                container.appendChild(card);
             });
         }
 
-        function editDiary(i) {
-            const newText = prompt("Ubah kenanganmu:", diaries[i].content);
-            if(newText) {
-                diaries[i].content = newText;
-                localStorage.setItem('n4t3v_diary', JSON.stringify(diaries));
-                renderShelf();
+        function editMemory(i) {
+            const update = prompt("Edit kenanganmu (tanggal tetap sama):", db[i].content);
+            if(update) {
+                db[i].content = update;
+                localStorage.setItem('n4t3v_storage', JSON.stringify(db));
+                renderMemories();
             }
         }
 
-        function deleteDiary(i) {
+        function deleteMemory(i) {
             if(confirm("Hapus kenangan ini?")) {
-                diaries.splice(i, 1);
-                localStorage.setItem('n4t3v_diary', JSON.stringify(diaries));
-                renderShelf();
+                db.splice(i, 1);
+                localStorage.setItem('n4t3v_storage', JSON.stringify(db));
+                renderMemories();
             }
         }
 
-        function updateQuote() {
-            const q = [
-                "Jadilah versi terbaik dari dirimu sendiri.",
-                "Hari yang cerah dimulai dari pikiran yang positif.",
-                "Jangan berhenti sampai kamu bangga.",
-                "Setiap hari adalah kesempatan baru."
+        function showNewQuote() {
+            const quotes = [
+                "\"Lakukan hal kecil dengan cinta yang besar.\"",
+                "\"Setiap hari adalah kesempatan untuk menulis cerita baru.\"",
+                "\"Jadilah alasan seseorang tersenyum hari ini.\"",
+                "\"Istirahatlah jika lelah, tapi jangan menyerah.\""
             ];
-            document.getElementById('quote').innerText = q[Math.floor(Math.random()*q.length)];
+            document.getElementById('quoteText').innerText = quotes[Math.floor(Math.random()*quotes.length)];
         }
-    <script>
-    let diaries = JSON.parse(localStorage.getItem('n4t3v_diary')) || [];
-    let selectedMood = "Senang";
-    
-    // SISTEM PIN CUSTOM
-    function checkPass() {
-        const passInput = document.getElementById('passInput');
-        const userPass = passInput.value;
-        const savedPass = localStorage.getItem('n4t3v_pin');
-
-        if (!savedPass) {
-            // Jika belum ada PIN, maka input pertama akan jadi PIN baru
-            if (userPass.length < 4) {
-                alert("Buat PIN minimal 4 karakter ya!");
-            } else {
-                localStorage.setItem('n4t3v_pin', userPass);
-                alert("PIN berhasil dibuat! Ingat baik-baik ya ✨");
-                document.getElementById('login-screen').style.display = 'none';
-            }
-        } else {
-            // Jika sudah ada PIN, cek apakah inputnya sama
-            if (userPass === savedPass) {
-                document.getElementById('login-screen').style.display = 'none';
-            } else {
-                alert("PIN salah, Lyn! Coba diingat lagi atau cek clue.");
-            }
-        }
-    }
-
-    // Fungsi ganti clue (Bisa kamu edit manual di sini)
-    const clueText = "Nama kesayangan atau tanggal lahirmu";
-
-    function togglePass() {
-        const inp = document.getElementById('passInput');
-        inp.type = inp.type === 'password' ? 'text' : 'password';
-    }
-
-    // --- SISANYA TETAP SAMA ---
-    function showTab(id) {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        if(id === 'tab-shelf') renderShelf();
-        if(id === 'tab-target') updateQuote();
-    }
-
-    function setMood(mood, el) {
-        document.querySelectorAll('.mood-item').forEach(m => m.classList.remove('selected'));
-        el.classList.add('selected');
-        selectedMood = mood;
-    }
-
-    const hours = new Date().getHours();
-    const greet = hours < 11 ? "Pagi" : hours < 15 ? "Siang" : hours < 19 ? "Sore" : "Malam";
-    document.getElementById('greeting').innerText = `Selamat ${greet}, nikmati harimu dengan menulis diary ✨`;
-
-    function saveDiary() {
-        const text = document.getElementById('diaryInput').value;
-        if(!text) return;
-        const now = new Date();
-        const entry = {
-            id: Date.now(),
-            date: now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
-            time: now.toLocaleTimeString('id-ID'), // Simpan Jam:Menit:Detik
-            mood: selectedMood,
-            content: text
-        };
-        diaries.unshift(entry);
-        localStorage.setItem('n4t3v_diary', JSON.stringify(diaries));
-        document.getElementById('diaryInput').value = '';
-        alert("Kenangan tersimpan!");
-    }
-
-    function renderShelf() {
-        const list = document.getElementById('shelfList');
-        list.innerHTML = '';
-        diaries.forEach((d, i) => {
-            const div = document.createElement('div');
-            div.className = 'book-card';
-            div.innerHTML = `
-                <div class="book-time">${d.date} | ${d.time} | Mood: ${d.mood}</div>
-                <div style="font-family:'Indie Flower'; font-size:16px">${d.content}</div>
-                <div class="book-actions">
-                    <button class="btn-action" onclick="editDiary(${i})">Edit</button>
-                    <button class="btn-action" style="color:red" onclick="deleteDiary(${i})">Hapus</button>
-                </div>
-            `;
-            list.appendChild(div);
-        });
-    }
-
-    function editDiary(i) {
-        const newText = prompt("Ubah kenanganmu:", diaries[i].content);
-        if(newText) {
-            diaries[i].content = newText;
-            localStorage.setItem('n4t3v_diary', JSON.stringify(diaries));
-            renderShelf();
-        }
-    }
-
-    function deleteDiary(i) {
-        if(confirm("Hapus kenangan ini?")) {
-            diaries.splice(i, 1);
-            localStorage.setItem('n4t3v_diary', JSON.stringify(diaries));
-            renderShelf();
-        }
-    }
-
-    function updateQuote() {
-        const q = [
-            "Jadilah versi terbaik dari dirimu sendiri.",
-            "Hari yang cerah dimulai dari pikiran yang positif.",
-            "Jangan berhenti sampai kamu bangga.",
-            "Setiap hari adalah kesempatan baru.",
-            "Lakukan hal kecil dengan cinta yang besar."
-        ];
-        document.getElementById('quote').innerText = q[Math.floor(Math.random()*q.length)];
-    }
-</script>
+    </script>
 </body>
 </html>
