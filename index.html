@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reminder App | PP Terpadu Al Fauzan</title>
@@ -90,6 +91,56 @@
         <li id="m-dash" onclick="show('dash')">Dashboard</li>
     </ul>
 </nav>
+    <div id="stats-container" style="max-width: 900px; margin: 20px auto; padding: 25px; background: white; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee;">
+    
+    <h3 style="text-align: center; color: #556b2f; margin-bottom: 20px;">📊 Statistik Progres Tugas</h3>
+    
+    <div style="height: 300px; margin-bottom: 40px;">
+        <canvas id="taskChart"></canvas>
+    </div>
+
+    <h3 style="color: #556b2f; margin-bottom: 15px;">📋 Rangkuman Tugas</h3>
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; min-width: 500px;">
+            <thead>
+                <tr style="background: #9caf88; color: white;">
+                    <th style="padding: 12px; border: 1px solid #ddd;">Periode</th>
+                    <th style="padding: 12px; border: 1px solid #ddd;">Belum Selesai</th>
+                    <th style="padding: 12px; border: 1px solid #ddd;">Proses</th>
+                    <th style="padding: 12px; border: 1px solid #ddd;">Selesai</th>
+                    <th style="padding: 12px; border: 1px solid #ddd;">Tepat Waktu</th>
+                    <th style="padding: 12px; border: 1px solid #ddd;">Terlambat</th>
+                </tr>
+            </thead>
+            <tbody style="text-align: center;">
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Mingguan</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">3</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">2</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">5</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">4</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; color: red;">1</td>
+                </tr>
+                <tr style="background: #fdfdfd;">
+                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Bulanan</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">10</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">5</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">20</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">18</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; color: red;">2</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Tahunan</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">45</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">12</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">150</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">140</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; color: red;">10</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <div id="home" class="container active">
     <div class="welcome-section">
@@ -282,5 +333,35 @@
         });
     }
 </script>
+    <script>
+    // Inisialisasi Grafik Batang
+    const ctx = document.getElementById('taskChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Belum Selesai', 'Dalam Proses', 'Selesai', 'Tepat Waktu', 'Terlambat'],
+            datasets: [{
+                label: 'Jumlah Tugas',
+                data: [12, 19, 30, 25, 8], // Angka contoh
+                backgroundColor: [
+                    '#ff6b6b', // Merah
+                    '#ffd93d', // Kuning
+                    '#9caf88', // Sage Green
+                    '#4facfe', // Biru
+                    '#cc7e5c'  // Terracotta
+                ],
+                borderRadius: 10
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
 </body>
 </html>
+
