@@ -235,15 +235,36 @@
         render();
     };
 
-    function show(page) {
-        document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
-        document.querySelectorAll('.nav-menu li').forEach(l => l.classList.remove('active'));
-        document.getElementById(page).classList.add('active');
-        document.getElementById('m-' + page).classList.add('active');
-        if(page === 'job') document.getElementById('quote-text').innerText = `"${quotes[Math.floor(Math.random()*quotes.length)]}"`;
-        render();
+  function show(page) {
+    // 1. Sembunyikan SEMUA halaman dulu
+    // Kita pakai selector yang mencakup semua bagian utama kamu
+    document.querySelectorAll('.container, .section, #stats').forEach(el => {
+        el.style.display = 'none';
+        el.classList.remove('active');
+    });
+
+    // 2. Tampilkan halaman yang dipilih
+    const target = document.getElementById(page);
+    if (target) {
+        target.style.display = 'block';
+        target.classList.add('active');
+
+        // 3. Khusus menu statistik, jalankan hitungan grafik
+        if (page === 'stats') { 
+            updateStats(); 
+        }
+
+        // 4. Khusus menu job, jalankan render list tugas
+        if (page === 'job') {
+            render();
+        }
     }
 
+    // 5. Update tampilan menu aktif di navigasi
+    document.querySelectorAll('.nav-menu li').forEach(l => l.classList.remove('active'));
+    const activeMenu = document.getElementById('m-' + page);
+    if (activeMenu) { activeMenu.classList.add('active'); }
+}
     function changeName() {
         let n = prompt("Ganti Nama Profil:", userName);
         if(n) { userName = n; localStorage.setItem('nat_user', n); document.getElementById('display-name').innerText = n; }
@@ -329,40 +350,69 @@
                     <textarea placeholder="Kenapa molor? Tulis keterangannya..." onchange="updateJobNote(${j.id}, this.value)" 
                         style="width:100%; height:60px; margin-top:15px; border-radius:15px; border:1px solid #eee; padding:10px; font-size:0.85rem;">${j.note}</textarea>
                 </div>
-            `;
+        </script> 
+        <script>
+    let myChart; 
+
+    function updateStats() {
+        let belum = 0, proses = 0, selesai = 0, lambat = 0;
+        const sekarang = new Date();
+
+        if (typeof jobs !== 'undefined') {
+            jobs.forEach(j => {
+                const deadline = new Date(j.deadline);
+                if (j.done) { selesai++; } 
+                else if (deadline < sekarang) { lambat++; } 
+                else if (j.progress > 0) { proses++; } 
+                else { belum++; }
+            });
+        }
+
+        if(document.getElementById('s-belum')) {
+            document.getElementById('s-belum').innerText = belum;
+            document.getElementById('s-proses').innerText = proses;
+            document.getElementById('s-selesai').innerText = selesai;
+            document.getElementById('s-lambat').innerText = lambat;
+        }
+
+        const ctx = document.getElementById('taskChart').getContext('2d');
+        if (myChart) { myChart.destroy(); }
+        
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Belum', 'Proses', 'Selesai', 'Terlambat'],
+                datasets: [{
+                    label: 'Jumlah Tugas',
+                    data: [belum, proses, selesai, lambat],
+                    backgroundColor: ['#ff6b6b', '#ffd93d', '#9caf88', '#cc7e5c'],
+                    borderRadius: 10
+                }]
+            },
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true } }
+            }
         });
     }
-</script>
-    <script>
-    // Inisialisasi Grafik Batang
-    const ctx = document.getElementById('taskChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Belum Selesai', 'Dalam Proses', 'Selesai', 'Tepat Waktu', 'Terlambat'],
-            datasets: [{
-                label: 'Jumlah Tugas',
-                data: [12, 19, 30, 25, 8], // Angka contoh
-                backgroundColor: [
-                    '#ff6b6b', // Merah
-                    '#ffd93d', // Kuning
-                    '#9caf88', // Sage Green
-                    '#4facfe', // Biru
-                    '#cc7e5c'  // Terracotta
-                ],
-                borderRadius: 10
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: { beginAtZero: true }
-            }
+
+    function show(page) {
+        document.querySelectorAll('.container, .section').forEach(s => {
+            s.style.display = 'none';
+        });
+        
+        const target = document.getElementById(page);
+        if (target) {
+            target.style.display = 'block';
+            if (page === 'stats') { updateStats(); }
         }
-    });
+
+        document.querySelectorAll('.nav-menu li').forEach(l => l.classList.remove('active'));
+        const activeMenu = document.getElementById('m-' + page);
+        if (activeMenu) { activeMenu.classList.add('active'); }
+    }
 </script>
+
 </body>
 </html>
-
-
