@@ -1,102 +1,285 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Pondok Pesantren App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reminder App | PP Terpadu Al Fauzan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Desain Estetik Pastel */
-        body { font-family: 'Poppins', sans-serif; margin: 0; background: linear-gradient(135deg, #e0c3fc 0%, #fbc2eb 100%); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
-        .main-wrapper { background: white; width: 100%; max-width: 900px; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        
-        /* Navigasi */
-        .nav-menu { display: flex; gap: 10px; list-style: none; padding: 0; justify-content: flex-end; }
-        .nav-menu li { cursor: pointer; padding: 8px 20px; border-radius: 20px; color: #6c5ce7; font-weight: 500; }
-        .nav-menu li.active { background-color: #6c5ce7; color: white; }
-        
-        .container { display: none; }
+        :root {
+            --primary: #6c5ce7;
+            --accent: #a29bfe;
+            --bg: linear-gradient(135deg, #fef9c3 0%, #e0c3fc 50%, #d1d1f7 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
+        body { background: var(--bg); min-height: 100vh; color: #333; overflow-x: hidden; }
+
+        /* NAVBAR PREMIUM */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0; z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .nav-title { font-weight: 800; color: var(--primary); font-size: 1.1rem; }
+        .nav-menu { display: flex; gap: 10px; list-style: none; }
+        .nav-menu li { 
+            cursor: pointer; font-weight: 700; color: #666; font-size: 0.85rem;
+            padding: 10px 20px; border-radius: 25px; transition: 0.3s;
+        }
+        .nav-menu li.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3); }
+
+        /* CONTAINER FULL WIDTH */
+        .container { width: 100%; max-width: 900px; margin: 0 auto; padding: 30px 20px; display: none; animation: fadeIn 0.4s ease; }
         .container.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Chart Styling */
-        .chart-row { display: flex; align-items: flex-end; gap: 20px; height: 200px; margin: 20px 0; border-bottom: 2px solid #ddd; }
-        .bar { width: 50px; background: #a29bfe; transition: height 0.5s; border-radius: 5px 5px 0 0; position: relative; }
-        .bar:hover { background: #6c5ce7; }
-        .bar span { position: absolute; top: -25px; left: 5px; font-size: 12px; }
+        .card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border-radius: 30px; padding: 30px; border: 1px solid rgba(255,255,255,0.7); box-shadow: 0 15px 35px rgba(0,0,0,0.05); margin-bottom: 25px; }
 
-        /* Tabel Styling */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th { background-color: #a29bfe; color: white; padding: 12px; text-align: left; }
-        td { padding: 12px; border: 1px solid #eee; }
+        /* HOME STYLES */
+        .welcome-section { background: white; padding: 35px; border-radius: 30px; border-left: 12px solid var(--primary); margin-bottom: 25px; }
+        .user-name { font-size: 2.2rem; font-weight: 800; color: #2d3436; margin: 10px 0; cursor: pointer; }
+        .sub-header { color: #636e72; font-size: 1rem; font-weight: 600; }
+        
+        .flex-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .clock-card { background: var(--primary); color: white; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+        #clock { font-size: 2.5rem; font-weight: 800; }
+
+        #notepad { width: 100%; height: 250px; border: none; background: #fffde7; border-radius: 20px; padding: 20px; font-size: 1.1rem; color: #5d4037; resize: none; box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); }
+
+        /* PENGUMUMAN / TO-DO */
+        .ann-box { background: white; border-radius: 20px; padding: 15px; margin-top: 15px; border-left: 5px solid var(--accent); display: flex; justify-content: space-between; align-items: center; }
+
+        /* MY JOB & PETUNJUK (SESUAI GAMBAR) */
+        .quote-box { font-family: 'Dancing Script', cursive; font-size: 2.2rem; text-align: center; margin-bottom: 30px; color: #2d3436; }
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { font-size: 0.85rem; font-weight: 800; color: #555; display: block; margin-bottom: 8px; }
+        input { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #ddd; outline: none; font-size: 1rem; background: white; transition: 0.3s; }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(108, 92, 231, 0.1); }
+        .btn-main { background: var(--primary); color: white; border: none; padding: 18px; border-radius: 20px; font-weight: 800; width: 100%; cursor: pointer; font-size: 1rem; margin-top: 10px; }
+
+        /* PETUNJUK MINI - PERSIS GAMBAR */
+        .petunjuk-card { background: rgba(255, 255, 255, 0.9); border-radius: 25px; padding: 20px; display: flex; align-items: center; gap: 15px; border: 1px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.03); }
+        .petunjuk-icon { font-size: 1.5rem; }
+        .petunjuk-text h4 { font-size: 1rem; color: #2d3436; margin-bottom: 4px; }
+        .petunjuk-text p { font-size: 0.85rem; color: #666; line-height: 1.4; }
+
+        /* DASHBOARD */
+        .dash-item { background: white; border-radius: 25px; padding: 25px; margin-bottom: 20px; border: 1px solid #eee; }
+        .prog-bg { background: #eee; height: 14px; border-radius: 10px; margin: 15px 0; overflow: hidden; }
+        .prog-fill { background: var(--primary); height: 100%; transition: 0.6s; }
+        .badge { padding: 6px 14px; border-radius: 10px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
+
+        @media (max-width: 768px) { .flex-row, .input-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-<div class="main-wrapper">
+<nav>
+    <div class="nav-title">Pondok Pesantren Terpadu Al Fauzan</div>
     <ul class="nav-menu">
-        <li id="m-home" onclick="show('home')" class="active">Home</li>
+        <li id="m-home" class="active" onclick="show('home')">Home</li>
         <li id="m-job" onclick="show('job')">My Job</li>
         <li id="m-dash" onclick="show('dash')">Dashboard</li>
-        <li id="m-stats" onclick="show('stats')">Statistik</li>
     </ul>
+</nav>
 
-    <div id="stats" class="container active">
-        <h2>Statistik Progres Tugas</h2>
-        
-        <div class="chart-row" id="chart">
-            </div>
-
-        <table id="stats-table">
-            <thead>
-                <tr>
-                    <th>Kategori</th>
-                    <th>Selesai</th>
-                    <th>Belum</th>
-                    <th>Proses</th>
-                    <th>Molor</th>
-                </tr>
-            </thead>
-            <tbody id="table-body">
-                </tbody>
-        </table>
+<div id="home" class="container active">
+    <div class="welcome-section">
+        <p style="color: var(--primary); font-weight: 700;">Selamat Datang Kembali 👋</p>
+        <h1 class="user-name" id="display-name" onclick="changeName()">Nathania Evelyn</h1>
+        <p class="sub-header">Di Sistem Reminder App by Nathania Evelyn</p>
     </div>
 
-    <div id="home" class="container">...</div>
-    <div id="job" class="container">...</div>
-    <div id="dash" class="container">...</div>
+    <div class="flex-row">
+        <div class="card clock-card">
+            <h2 id="clock">00:00:00</h2>
+            <p id="date-text" style="font-weight: 600; opacity: 0.9;"></p>
+        </div>
+        <div class="card">
+            <h3 style="margin-bottom: 15px;">📢 Pengumuman</h3>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="ann-input" placeholder="Tulis pengumuman..." style="padding: 10px;">
+                <button onclick="addAnn()" style="background:var(--primary); color:white; border:none; padding:0 15px; border-radius:12px; cursor:pointer;">+</button>
+            </div>
+            <div id="ann-list-container" style="margin-top: 10px;"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>📝 Catatan Hari Ini</h3>
+        <textarea id="notepad" placeholder="Apa yang ingin kamu catat hari ini?"></textarea>
+    </div>
 </div>
 
+<div id="job" class="container">
+    <div class="quote-box" id="quote-text">"Satu langkah hari ini menentukan masa depanmu."</div>
+    
+    <div class="card">
+        <h2 style="margin-bottom: 25px;">Tambah Kegiatan Baru</h2>
+        <div class="input-group">
+            <label>Nama Tugas / Kegiatan</label>
+            <input type="text" id="j-name" placeholder="Contoh: Setoran Hafalan">
+        </div>
+        <div class="input-grid">
+            <div class="input-group">
+                <label>Jam Mulai</label>
+                <input type="time" id="j-time">
+            </div>
+            <div class="input-group">
+                <label>Tanggal</label>
+                <input type="date" id="j-date">
+            </div>
+        </div>
+        <div class="input-group">
+            <label>Batas Akhir (Deadline)</label>
+            <input type="datetime-local" id="j-deadline">
+        </div>
+        <button class="btn-main" onclick="addJob()">SIMPAN PENGINGAT ✨</button>
+    </div>
+
+    <div class="petunjuk-card">
+        <span class="petunjuk-icon">📌</span>
+        <div class="petunjuk-text">
+            <h4>Petunjuk</h4>
+            <p>Pastikan mengisi deadline agar alarm pengingat aktif 1 jam sebelum batas waktu berakhir.</p>
+        </div>
+    </div>
+</div>
+
+<div id="dash" class="container">
+    <div class="card">
+        <h2>📊 Dashboard Progress</h2>
+        <p style="color: #888; margin-bottom: 30px;">Lacak sejauh mana tugasmu sudah selesai.</p>
+        <div id="dash-render"></div>
+    </div>
+</div>
+
+<audio id="alert-sound" src="https://assets.mixkit.co/active_storage/sfx/2358/2358-preview.mp3"></audio>
+
 <script>
-    // Data dummy untuk contoh (nanti kamu ganti dengan data dari tasks)
-    const statsData = [
-        { label: 'Minggu', selesai: 5, belum: 3, proses: 2, molor: 1 },
-        { label: 'Bulan', selesai: 20, belum: 10, proses: 5, molor: 2 },
-        { label: 'Tahun', selesai: 150, belum: 45, proses: 12, molor: 10 }
+    let jobs = JSON.parse(localStorage.getItem('nat_jobs')) || [];
+    let anns = JSON.parse(localStorage.getItem('nat_anns')) || [];
+    let userName = localStorage.getItem('nat_user') || "Nathania Evelyn";
+
+    const quotes = [
+        "Masa depan adalah milik mereka yang percaya pada mimpi.",
+        "Disiplin adalah jembatan antara cita-cita dan pencapaian.",
+        "Kesuksesan berawal dari keputusan untuk mencoba.",
+        "Pendidikan bukan cuma soal sekolah, tapi soal ilmu.",
+        "Kerjakan sekarang, atau menyesal kemudian."
     ];
+
+    window.onload = () => {
+        document.getElementById('display-name').innerText = userName;
+        document.getElementById('notepad').value = localStorage.getItem('nat_note') || "";
+        updateClock(); setInterval(updateClock, 1000);
+        render();
+    };
 
     function show(page) {
         document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.nav-menu li').forEach(l => l.classList.remove('active'));
         document.getElementById(page).classList.add('active');
-        if(page === 'stats') renderStats();
+        document.getElementById('m-' + page).classList.add('active');
+        if(page === 'job') document.getElementById('quote-text').innerText = `"${quotes[Math.floor(Math.random()*quotes.length)]}"`;
+        render();
     }
 
-    function renderStats() {
-        const chart = document.getElementById('chart');
-        const body = document.getElementById('table-body');
-        chart.innerHTML = '';
-        body.innerHTML = '';
+    function changeName() {
+        let n = prompt("Ganti Nama Profil:", userName);
+        if(n) { userName = n; localStorage.setItem('nat_user', n); document.getElementById('display-name').innerText = n; }
+    }
 
-        statsData.forEach(item => {
-            // Render Chart
-            const height = (item.selesai / 20) * 100; // Contoh kalkulasi tinggi
-            chart.innerHTML += `<div class="bar" style="height:${height}px"><span>${item.label}</span></div>`;
-            
-            // Render Tabel
-            body.innerHTML += `<tr>
-                <td>${item.label}</td>
-                <td>${item.selesai}</td>
-                <td>${item.belum}</td>
-                <td>${item.proses}</td>
-                <td>${item.molor}</td>
-            </tr>`;
+    function updateClock() {
+        const now = new Date();
+        document.getElementById('clock').innerText = now.toLocaleTimeString('id-ID');
+        document.getElementById('date-text').innerText = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        
+        // Alarm Logic
+        const curT = now.getHours().toString().padStart(2,'0') + ":" + now.getMinutes().toString().padStart(2,'0');
+        const curD = now.toISOString().split('T')[0];
+        jobs.forEach(j => {
+            if(j.date === curD && j.time === curT && !j.alerted && !j.done) {
+                document.getElementById('alert-sound').play();
+                alert(`🔔 Halo ${userName}!\nJangan lupa kerjakan: ${j.name}`);
+                j.alerted = true; save();
+            }
+        });
+    }
+
+    function addAnn() {
+        let v = document.getElementById('ann-input').value;
+        if(v) { anns.push(v); document.getElementById('ann-input').value = ""; save(); }
+    }
+    function delAnn(i) { anns.splice(i, 1); save(); }
+
+    function addJob() {
+        let name = document.getElementById('j-name').value;
+        let time = document.getElementById('j-time').value;
+        let date = document.getElementById('j-date').value;
+        if(!name || !time || !date) return alert("Mohon lengkapi data tugas!");
+        jobs.push({ id: Date.now(), name, time, date, deadline: document.getElementById('j-deadline').value, progress: 0, note: "", done: false });
+        save(); alert("Tugas Berhasil Disimpan!");
+    }
+
+    function updateProg(id, val) {
+        jobs = jobs.map(j => j.id === id ? {...j, progress: val, done: val == 100} : j);
+        save();
+    }
+
+    function updateJobNote(id, txt) {
+        jobs = jobs.map(j => j.id === id ? {...j, note: txt} : j);
+        save();
+    }
+
+    function delJob(id) { if(confirm("Hapus tugas?")) { jobs = jobs.filter(j => j.id !== id); save(); } }
+
+    function save() {
+        localStorage.setItem('nat_jobs', JSON.stringify(jobs));
+        localStorage.setItem('nat_anns', JSON.stringify(anns));
+        render();
+    }
+
+    document.getElementById('notepad').addEventListener('input', e => localStorage.setItem('nat_note', e.target.value));
+
+    function render() {
+        const al = document.getElementById('ann-list-container');
+        al.innerHTML = "";
+        anns.forEach((a, i) => {
+            al.innerHTML += `<div class="ann-box"><span>• ${a}</span><button onclick="delAnn(${i})" style="border:none; color:red; background:none; cursor:pointer; font-weight:bold;">Hapus</button></div>`;
+        });
+
+        const dl = document.getElementById('dash-render');
+        dl.innerHTML = jobs.length === 0 ? "<p style='text-align:center; color:#999;'>Belum ada rencana tugas.</p>" : "";
+        jobs.forEach(j => {
+            dl.innerHTML += `
+                <div class="dash-item">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <div>
+                            <span class="badge" style="background:${j.done ? '#55efc4' : '#ffeaa7'}; color:${j.done ? '#00b894' : '#d63031'}">${j.done ? 'Selesai' : 'On Progress'}</span>
+                            <h3 style="margin-top:10px;">${j.name}</h3>
+                            <p style="font-size:0.8rem; color:#888;">Waktu: ${j.time} | Deadline: ${j.deadline || '-'}</p>
+                        </div>
+                        <button onclick="delJob(${j.id})" style="border:none; color:red; background:none; cursor:pointer; font-weight:bold;">Hapus</button>
+                    </div>
+                    <div class="prog-bg"><div class="prog-fill" style="width:${j.progress}%"></div></div>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <input type="range" min="0" max="100" value="${j.progress}" onchange="updateProg(${j.id}, this.value)" style="width:75%; accent-color:var(--primary);">
+                        <b style="font-size:0.9rem;">${j.progress}%</b>
+                    </div>
+                    <textarea placeholder="Kenapa molor? Tulis keterangannya..." onchange="updateJobNote(${j.id}, this.value)" 
+                        style="width:100%; height:60px; margin-top:15px; border-radius:15px; border:1px solid #eee; padding:10px; font-size:0.85rem;">${j.note}</textarea>
+                </div>
+            `;
         });
     }
 </script>
