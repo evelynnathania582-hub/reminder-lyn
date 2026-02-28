@@ -4,22 +4,33 @@
     <meta charset="UTF-8">
     <title>Pondok Pesantren App</title>
     <style>
-        /* CSS Dasar */
-        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f4f4f9; }
-        .nav-menu { display: flex; gap: 15px; list-style: none; padding: 0; background: #333; color: white; padding: 10px; border-radius: 8px; }
-        .nav-menu li { cursor: pointer; padding: 5px 10px; }
-        .nav-menu li.active { background: #555; border-radius: 4px; font-weight: bold; }
+        /* Desain Estetik Pastel */
+        body { font-family: 'Poppins', sans-serif; margin: 0; background: linear-gradient(135deg, #e0c3fc 0%, #fbc2eb 100%); min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
+        .main-wrapper { background: white; width: 100%; max-width: 900px; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         
-        .container { display: none; padding: 20px; background: white; border-radius: 8px; margin-top: 10px; }
+        /* Navigasi */
+        .nav-menu { display: flex; gap: 10px; list-style: none; padding: 0; justify-content: flex-end; }
+        .nav-menu li { cursor: pointer; padding: 8px 20px; border-radius: 20px; color: #6c5ce7; font-weight: 500; }
+        .nav-menu li.active { background-color: #6c5ce7; color: white; }
+        
+        .container { display: none; }
         .container.active { display: block; }
-        
-        .task-card { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
-        .progress-bar { height: 10px; background: #eee; border-radius: 5px; overflow: hidden; }
-        .progress-fill { height: 100%; background: green; }
+
+        /* Chart Styling */
+        .chart-row { display: flex; align-items: flex-end; gap: 20px; height: 200px; margin: 20px 0; border-bottom: 2px solid #ddd; }
+        .bar { width: 50px; background: #a29bfe; transition: height 0.5s; border-radius: 5px 5px 0 0; position: relative; }
+        .bar:hover { background: #6c5ce7; }
+        .bar span { position: absolute; top: -25px; left: 5px; font-size: 12px; }
+
+        /* Tabel Styling */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background-color: #a29bfe; color: white; padding: 12px; text-align: left; }
+        td { padding: 12px; border: 1px solid #eee; }
     </style>
 </head>
 <body>
 
+<div class="main-wrapper">
     <ul class="nav-menu">
         <li id="m-home" onclick="show('home')" class="active">Home</li>
         <li id="m-job" onclick="show('job')">My Job</li>
@@ -27,99 +38,67 @@
         <li id="m-stats" onclick="show('stats')">Statistik</li>
     </ul>
 
-    <div id="home" class="container active">
-        <h1>Halo, Nathania Evelyn!</h1>
-        <p>Sistem Reminder App by Nathania Evelyn</p>
-        <h2 id="clock">00:00:00</h2>
-        <hr>
-        <h3>Pengumuman</h3>
-        <input type="text" id="pengumuman" placeholder="Tulis pengumuman...">
-        <button onclick="addPengumuman()">+</button>
-        <h3>Catatan Hari Ini</h3>
-        <textarea id="notes" style="width: 100%; height: 100px;"></textarea>
-    </div>
-
-    <div id="job" class="container">
-        <h2>Tambah Kegiatan Baru</h2>
-        <input type="text" id="taskName" placeholder="Nama Tugas">
-        <input type="datetime-local" id="deadline">
-        <button onclick="saveTask()">SIMPAN PENGINGAT ✨</button>
-    </div>
-
-    <div id="dash" class="container">
-        <h2>Dashboard Progress</h2>
-        <div id="task-list"></div>
-    </div>
-
-    <div id="stats" class="container">
+    <div id="stats" class="container active">
         <h2>Statistik Progres Tugas</h2>
-        <table border="1" style="width: 100%; text-align: left;">
-            <tr><th>Status</th><th>Jumlah</th></tr>
-            <tr><td>Selesai</td><td id="stat-done">0</td></tr>
-            <tr><td>Belum Selesai</td><td id="stat-todo">0</td></tr>
+        
+        <div class="chart-row" id="chart">
+            </div>
+
+        <table id="stats-table">
+            <thead>
+                <tr>
+                    <th>Kategori</th>
+                    <th>Selesai</th>
+                    <th>Belum</th>
+                    <th>Proses</th>
+                    <th>Molor</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                </tbody>
         </table>
     </div>
 
-    <script>
-        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    <div id="home" class="container">...</div>
+    <div id="job" class="container">...</div>
+    <div id="dash" class="container">...</div>
+</div>
 
-        function show(page) {
-            document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.nav-menu li').forEach(l => l.classList.remove('active'));
-            document.getElementById(page).classList.add('active');
-            document.getElementById('m-' + page).classList.add('active');
-            if(page === 'dash') renderDashboard();
-            if(page === 'stats') renderStats();
-        }
+<script>
+    // Data dummy untuk contoh (nanti kamu ganti dengan data dari tasks)
+    const statsData = [
+        { label: 'Minggu', selesai: 5, belum: 3, proses: 2, molor: 1 },
+        { label: 'Bulan', selesai: 20, belum: 10, proses: 5, molor: 2 },
+        { label: 'Tahun', selesai: 150, belum: 45, proses: 12, molor: 10 }
+    ];
 
-        // Jam Digital
-        function updateClock() {
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
-        }
-        setInterval(updateClock, 1000);
+    function show(page) {
+        document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+        document.getElementById(page).classList.add('active');
+        if(page === 'stats') renderStats();
+    }
 
-        function saveTask() {
-            const name = document.getElementById('taskName').value;
-            const deadline = document.getElementById('deadline').value;
-            if(!name || !deadline) return alert("Isi semua data!");
-            tasks.push({ name, deadline, status: 'Belum', reason: '' });
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-            alert("Tugas Disimpan!");
-        }
+    function renderStats() {
+        const chart = document.getElementById('chart');
+        const body = document.getElementById('table-body');
+        chart.innerHTML = '';
+        body.innerHTML = '';
 
-        function renderDashboard() {
-            const list = document.getElementById('task-list');
-            list.innerHTML = '';
-            tasks.forEach((task, index) => {
-                const isLate = new Date(task.deadline) < new Date() && task.status !== 'Selesai';
-                list.innerHTML += `
-                    <div class="task-card">
-                        <p><strong>${task.name}</strong></p>
-                        <p>Deadline: ${task.deadline}</p>
-                        ${task.status === 'Belum' ? `<button onclick="finishTask(${index})">Tandai Selesai</button>` : '<span>Selesai ✅</span>'}
-                        ${isLate ? `<input type="text" placeholder="Kenapa molor?" onchange="saveReason(${index}, this.value)" value="${task.reason}">` : ''}
-                    </div>
-                `;
-            });
-        }
-
-        function finishTask(index) {
-            tasks[index].status = 'Selesai';
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-            renderDashboard();
-        }
-
-        function saveReason(index, val) {
-            tasks[index].reason = val;
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-        }
-
-        function renderStats() {
-            const done = tasks.filter(t => t.status === 'Selesai').length;
-            const todo = tasks.length - done;
-            document.getElementById('stat-done').innerText = done;
-            document.getElementById('stat-todo').innerText = todo;
-        }
-    </script>
+        statsData.forEach(item => {
+            // Render Chart
+            const height = (item.selesai / 20) * 100; // Contoh kalkulasi tinggi
+            chart.innerHTML += `<div class="bar" style="height:${height}px"><span>${item.label}</span></div>`;
+            
+            // Render Tabel
+            body.innerHTML += `<tr>
+                <td>${item.label}</td>
+                <td>${item.selesai}</td>
+                <td>${item.belum}</td>
+                <td>${item.proses}</td>
+                <td>${item.molor}</td>
+            </tr>`;
+        });
+    }
+</script>
 </body>
 </html>
